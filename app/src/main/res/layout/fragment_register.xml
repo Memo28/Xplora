@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        tools:context=".RegisterFragment">
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="vertical"
+        android:weightSum="1">
+
+
+        <ImageButton
+            android:id="@+id/imageButtonPhotoRegister"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:background="@drawable/roundcorner"
+            android:layout_weight="0.81"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
+
+        <EditText
+            android:id="@+id/editTextNameRegister"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/name"
+            android:inputType="textPersonName" />
+
+        <Spinner
+            android:layout_gravity="center"
+            android:id="@+id/spinnerCountry"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            />
+
+        <EditText
+            android:id="@+id/editTextEmailRegister"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/address"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/editTextPswRegister"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/passw"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/editTextPswConfirmRegister"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/passw2"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="182dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/registre" />
+    </LinearLayout>
+</ScrollView>

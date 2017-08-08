@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Xplora</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="ing_usr">Ingrese Usuario</string>
+    <string name="psw">Ingrese Contraseña</string>
+    <string name="inc_ses">Iniciar Sesión</string>
+    <string name="name">Ingrese Nombre</string>
+    <string name="country">Ingrese País</string>
+    <string name="address">Ingrese E-mail</string>
+    <string name="passw">Ingrese Contraseña</string>
+    <string name="passw2">Confirme Contraseña</string>
+    <string name="registre">Registrarse</string>
+    <string name="title_activity_first">FirstActivity</string>
+
+</resources>
