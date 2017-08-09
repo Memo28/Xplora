@@ -1,15 +1,21 @@
 package com.example.memovaradegante.xploraapp;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -57,6 +63,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private FirebaseAuth firebaseAuth;
 
     private static final int GALLERY_INTENT = 1;
+    private int STORAGE_PERMISSION_CODE = 23;
+
 
 
 
@@ -158,9 +166,33 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             registerUser();
         }
         if (view == imageButtonPhoto){
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult(intent,GALLERY_INTENT);
+            //Verificamos si se tienen permisos
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                //Comprobar si ha aceptado, no ha aceptado o nunca se le ha preguntado
+                if (CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) return;
+                    startActivityForResult(intent,GALLERY_INTENT);
+                } else {
+                    //Ha denegado la primera vez el permiso
+                    if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                    } else {
+                        Toast.makeText(getActivity(), "Por favor concede el permiso", Toast.LENGTH_LONG);
+                        Intent i = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        i.addCategory(Intent.CATEGORY_DEFAULT);
+                        i.setData(Uri.parse("package:" + getActivity().getPackageName()));
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                        startActivity(i);
+                    }
+
+                }
+            } else {
+                olderVersion();
+            }
         }
 
     }
@@ -169,25 +201,27 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == GALLERY_INTENT ) {
-            Log.d("test1", "Gallery");
             if (resultCode == Activity.RESULT_OK) {
-                Log.d("test1", "Result_OK");
                 Uri uri = data.getData();
                 Picasso.with(getActivity()).load(uri)
                         .transform(new CropCircleTransformation()).fit().into(imageButtonPhoto);
-
-            /*    InputStream inputStream;
-
-            try {
-                inputStream = getActivity().getContentResolver().openInputStream(uri);
-                Bitmap image = BitmapFactory.decodeStream(inputStream);
-                imageButtonPhoto.setImageBitmap(image);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                // show a message to the user indictating that the image is unavailable.
-                Toast.makeText(getContext(),"No se pudo abrir la imagen",Toast.LENGTH_LONG).show();
-            }*/
             }
         }
     }
-}
+
+        private  boolean CheckPermission(String permision){
+            int result = getActivity().checkCallingOrSelfPermission(permision);
+            return result == PackageManager.PERMISSION_GRANTED;
+        }
+
+        private void olderVersion(){
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent,GALLERY_INTENT);
+            if (CheckPermission(Manifest.permission.READ_EXTERNAL_STORAGE)){
+                startActivityForResult(intent,GALLERY_INTENT);
+            }else {
+                Toast.makeText(getActivity(), "Permiso no concedido", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
