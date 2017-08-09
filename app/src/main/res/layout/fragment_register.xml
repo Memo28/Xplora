@@ -17,11 +17,11 @@
 
         <ImageButton
             android:id="@+id/imageButtonPhotoRegister"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_margin="15dp"
-            android:background="@drawable/roundcorner"
+            android:background="@null"
             android:layout_weight="0.81"
             app:srcCompat="@android:drawable/ic_menu_camera" />
 
@@ -35,13 +35,6 @@
             android:hint="@string/name"
             android:inputType="textPersonName" />
 
-        <Spinner
-            android:layout_gravity="center"
-            android:id="@+id/spinnerCountry"
-            android:layout_width="227dp"
-            android:layout_height="wrap_content"
-            />
-
         <EditText
             android:id="@+id/editTextEmailRegister"
             android:layout_width="227dp"
@@ -51,6 +44,12 @@
             android:layout_marginBottom="10dp"
             android:hint="@string/address"
             android:inputType="textEmailAddress" />
+
+        <Spinner
+            android:id="@+id/spinnerCountry"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
         <EditText
             android:id="@+id/editTextPswRegister"

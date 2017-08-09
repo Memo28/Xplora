@@ -1,7 +1,11 @@
 package com.example.memovaradegante.xploraapp;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,11 +28,19 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.concurrent.Executor;
+
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.ACTIVITY_SERVICE;
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
 
@@ -43,6 +55,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private ProgressDialog progressDialog;
 
     private FirebaseAuth firebaseAuth;
+
+    private static final int GALLERY_INTENT = 1;
 
 
 
@@ -69,6 +83,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         btnRegister = (Button) getView().findViewById(R.id.buttonRegister);
         spinnerCountry = (Spinner) getView().findViewById(R.id.spinnerCountry);
         imageButtonPhoto = (ImageButton) getView().findViewById(R.id.imageButtonPhotoRegister);
+        Picasso.with(getActivity()).load(R.drawable.camera_profile)
+                .transform(new CropCircleTransformation()).fit().into(imageButtonPhoto);
 
 
         //Obtenemos los paises para el Spinner
@@ -142,8 +158,36 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             registerUser();
         }
         if (view == imageButtonPhoto){
-            Log.e("Correc","OK");
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent,GALLERY_INTENT);
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == GALLERY_INTENT ) {
+            Log.d("test1", "Gallery");
+            if (resultCode == Activity.RESULT_OK) {
+                Log.d("test1", "Result_OK");
+                Uri uri = data.getData();
+                Picasso.with(getActivity()).load(uri)
+                        .transform(new CropCircleTransformation()).fit().into(imageButtonPhoto);
+
+            /*    InputStream inputStream;
+
+            try {
+                inputStream = getActivity().getContentResolver().openInputStream(uri);
+                Bitmap image = BitmapFactory.decodeStream(inputStream);
+                imageButtonPhoto.setImageBitmap(image);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                // show a message to the user indictating that the image is unavailable.
+                Toast.makeText(getContext(),"No se pudo abrir la imagen",Toast.LENGTH_LONG).show();
+            }*/
+            }
+        }
     }
 }
