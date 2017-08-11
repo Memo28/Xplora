@@ -1,14 +1,12 @@
-package com.example.memovaradegante.xploraapp;
+package com.example.memovaradegante.xploraapp.fragments;
 
-import android.*;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,27 +24,31 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.memovaradegante.xploraapp.R;
+import com.example.memovaradegante.xploraapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
-import java.util.concurrent.Executor;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-
-import static android.app.Activity.RESULT_OK;
-import static android.content.Context.ACTIVITY_SERVICE;
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
 
@@ -58,13 +60,15 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private Spinner spinnerCountry;
     private ImageButton imageButtonPhoto;
 
-    private ProgressDialog progressDialog;
-
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseUser;
+    private StorageReference storageReference;
+
 
     private static final int GALLERY_INTENT = 1;
     private int STORAGE_PERMISSION_CODE = 23;
-
+    private Uri uriImageProfile;
+    private ProgressDialog progressDialog;
 
 
 
@@ -76,7 +80,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(getActivity());
 
-        return inflater.inflate(R.layout.fragment_register, container, false);
+        return inflater.inflate(com.example.memovaradegante.xploraapp.R.layout.fragment_register, container, false);
 
     }
 
@@ -113,17 +117,26 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         spinnerCountry.setAdapter(countryAdapter);
         spinnerCountry.setSelection(countryAdapter.getPosition("Mexico"));
 
+        //Agregamos los listener a los botones
         btnRegister.setOnClickListener(this);
         imageButtonPhoto.setOnClickListener(this);
+
+        //Referenciamos hacia la BD de Firebase
+        databaseUser = FirebaseDatabase.getInstance().getReference("users");
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+
     }
 
 
     private void registerUser(){
-        String name = editTextName.getText().toString().trim();
-        String country = spinnerCountry.getSelectedItem().toString();
-        String email = editTextEmail.getText().toString().trim();
-        String psw = editTextPsw.getText().toString().trim();
+        final String name = editTextName.getText().toString().trim();
+        final String country = spinnerCountry.getSelectedItem().toString();
+        final String email = editTextEmail.getText().toString().trim();
+        final String psw = editTextPsw.getText().toString().trim();
         String pswConfirm = editTextPswConfirm.getText().toString().trim();
+
+
         if (TextUtils.isEmpty(name)){
             Toast.makeText(getActivity(),"Por favor ingresa un nombre",Toast.LENGTH_SHORT).show();
             return;
@@ -140,24 +153,66 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }if (!psw.equals(pswConfirm)){
             Toast.makeText(getActivity(),"Las contraseñas no son iguales",Toast.LENGTH_SHORT).show();
             return;
+        }if(psw.length() < 6){
+            Toast.makeText(getActivity(),"La contraseña debe ser mayor a 6 caracteres",Toast.LENGTH_SHORT).show();
         }
 
         progressDialog.setMessage("Registrando Usuario...");
         progressDialog.show();
 
 
+
+        //Autentificacion hacia Firebase por correo y contraseña
         firebaseAuth.createUserWithEmailAndPassword(email,psw)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(getContext(),"Registro Exitos",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),"Registro exitos",Toast.LENGTH_LONG).show();
+                            addUser(name,email,psw,country);
                             progressDialog.dismiss();
                         }else {
-                            Toast.makeText(getContext(), task.getException()+ "",Toast.LENGTH_SHORT).show();
+                            if(task.getException().getMessage() == "The email address is already in use by another account."){
+                                Toast.makeText(getContext(),"Email ya registrado",Toast.LENGTH_LONG).show();
+                                progressDialog.dismiss();
+                                return;
+                            }if(task.getException().getMessage() == "The email address is badly formatted."){
+                                Toast.makeText(getContext(),"Por favor introdusca una direccion de correo correcta",Toast.LENGTH_LONG).show();
+                                progressDialog.dismiss();
+                                return;
+                            }
+                            Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+
+
                         }
                     }
                 });
+
+
+    }
+
+    //Agregamos informacion del usuario
+    private void addUser(final String name,final String email, final String country,final String psw) {
+        final String id = databaseUser.push().getKey();
+        final String pathImageUser = "profileImage"+id;
+
+        //Caso en el que el usuario haya seleccionado su imagen
+        if(uriImageProfile != null){
+            StorageReference filepath = storageReference.child(pathImageUser).child(uriImageProfile.getLastPathSegment());
+            filepath.putFile(uriImageProfile).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    @SuppressWarnings("VisibleForTests") Uri uriImage = taskSnapshot.getDownloadUrl();
+                    User user = new User(id,name,email,country,psw,uriImage.toString());
+                    databaseUser.child(id).setValue(user);
+                }
+            });
+        }else{
+            //Caso en el que usuario no selecciona una image
+            //Le pasamos como URL de imagen una cadena vacia debido a que no selecciona nada
+            User user = new User(id,name,email,country,psw,"");
+            databaseUser.child(id).setValue(user);
+        }
     }
 
     @Override
@@ -202,9 +257,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         //super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == GALLERY_INTENT ) {
             if (resultCode == Activity.RESULT_OK) {
-                Uri uri = data.getData();
-                Picasso.with(getActivity()).load(uri)
+                uriImageProfile = data.getData();
+                Picasso.with(getActivity()).load(uriImageProfile)
                         .transform(new CropCircleTransformation()).fit().into(imageButtonPhoto);
+
             }
         }
     }
@@ -224,4 +280,4 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(getActivity(), "Permiso no concedido", Toast.LENGTH_LONG).show();
             }
         }
-    }
+}

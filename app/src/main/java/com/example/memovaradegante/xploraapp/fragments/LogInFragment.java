@@ -1,4 +1,4 @@
-package com.example.memovaradegante.xploraapp;
+package com.example.memovaradegante.xploraapp.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.memovaradegante.xploraapp.R;
 
 import java.util.ArrayList;
 import java.util.Collections;

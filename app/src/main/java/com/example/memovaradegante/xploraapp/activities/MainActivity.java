@@ -1,4 +1,4 @@
-package com.example.memovaradegante.xploraapp;
+package com.example.memovaradegante.xploraapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
+import com.example.memovaradegante.xploraapp.R;
+import com.example.memovaradegante.xploraapp.fragments.LogInFragment;
+import com.example.memovaradegante.xploraapp.fragments.RegisterFragment;
 
 public class MainActivity extends AppCompatActivity {
 
