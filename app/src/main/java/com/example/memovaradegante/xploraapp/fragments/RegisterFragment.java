@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,15 +25,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.memovaradegante.xploraapp.R;
-import com.example.memovaradegante.xploraapp.activities.StartActivity;
+import com.example.memovaradegante.xploraapp.activities.HomeActivity;
 import com.example.memovaradegante.xploraapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -44,7 +39,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -174,7 +168,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                             progressDialog.dismiss();
                             //Mandar al Usuaeio a la pagina Prinicipal
                             getActivity().finish();
-                            startActivity(new Intent(getContext(), StartActivity.class));
+                            startActivity(new Intent(getContext(), HomeActivity.class));
                         }else {
                             if(task.getException().getMessage() == "The email address is already in use by another account."){
                                 Toast.makeText(getContext(),"Email ya registrado",Toast.LENGTH_LONG).show();

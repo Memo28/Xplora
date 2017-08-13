@@ -18,4 +18,14 @@
     <string name="registre">Registrarse</string>
     <string name="title_activity_first">FirstActivity</string>
 
+
+    <string name="main">Inicio</string>
+    <string name="menssages">Chat</string>
+    <string name="fab">Favoritos</string>
+    <string name="profile">Perfil</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
 </resources>

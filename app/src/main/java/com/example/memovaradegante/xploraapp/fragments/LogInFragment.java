@@ -1,15 +1,12 @@
 package com.example.memovaradegante.xploraapp.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +15,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.memovaradegante.xploraapp.R;
-import com.example.memovaradegante.xploraapp.activities.StartActivity;
+import com.example.memovaradegante.xploraapp.activities.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Locale;
 
 
 public class LogInFragment extends Fragment {
@@ -57,7 +50,7 @@ public class LogInFragment extends Fragment {
         if (firebaseAuth.getCurrentUser() != null){
             //Usuario ha iniciado sesion previamente
             getActivity().finish();
-            startActivity(new Intent(getContext(), StartActivity.class));
+            startActivity(new Intent(getContext(), HomeActivity.class));
         }
         editTextEmail = (EditText) getView().findViewById(R.id.editTextEmail);
         editTextPsw = (EditText) getView().findViewById(R.id.editTextPsw);
@@ -99,7 +92,7 @@ public class LogInFragment extends Fragment {
                         if(task.isSuccessful()){
                             progressDialog.dismiss();
                             getActivity().finish();
-                            startActivity(new Intent(getContext(), StartActivity.class));
+                            startActivity(new Intent(getContext(), HomeActivity.class));
                         }else {
                             Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_LONG);
                         }
