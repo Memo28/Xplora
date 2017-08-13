@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.memovaradegante.xploraapp.R;
+import com.example.memovaradegante.xploraapp.activities.StartActivity;
 import com.example.memovaradegante.xploraapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -171,6 +172,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                             Toast.makeText(getContext(),"Registro exitos",Toast.LENGTH_LONG).show();
                             addUser(name,email,psw,country);
                             progressDialog.dismiss();
+                            //Mandar al Usuaeio a la pagina Prinicipal
+                            getActivity().finish();
+                            startActivity(new Intent(getContext(), StartActivity.class));
                         }else {
                             if(task.getException().getMessage() == "The email address is already in use by another account."){
                                 Toast.makeText(getContext(),"Email ya registrado",Toast.LENGTH_LONG).show();
@@ -182,8 +186,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                                 return;
                             }
                             Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-
-
                         }
                     }
                 });
