@@ -4,10 +4,25 @@
     android:layout_height="match_parent"
     tools:context="com.example.memovaradegante.xploraapp.fragments.StartFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Start" />
+        tools:context=".activities.MainActivity">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:scrollbars="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fltActionBtn"
+        android:layout_gravity="bottom|right"
+        android:layout_width="wrap_content"
+        android:src="@mipmap/ic_add_fav"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>
