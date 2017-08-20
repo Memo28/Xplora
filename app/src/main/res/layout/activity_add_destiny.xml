@@ -40,19 +40,24 @@
             android:hint="Agrega un titulo..."
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/editTextPlaceAddDestiny"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/input_outline"
-            android:layout_gravity="center_vertical"
-            android:hint="¿Que lugar visitaste...?"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
+        <AutoCompleteTextView
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dp"
+            android:background="@drawable/input_outline"
+            android:id="@+id/autoCompleteTextViewAddDestiny"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="¿Que lugar visitaste...?" >
+            <requestFocus />
+        </AutoCompleteTextView>
         <LinearLayout
+            android:layout_marginBottom="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <Spinner
+                android:paddingTop="5dp"
                 android:id="@+id/spinnerTypeAddDestiny"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"

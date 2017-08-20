@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.example.memovaradegante.xploraapp.R;
 import com.example.memovaradegante.xploraapp.activities.AddDestinyActivity;
 import com.example.memovaradegante.xploraapp.adapters.MyAdapterPlace;
-import com.example.memovaradegante.xploraapp.models.Place;
+import com.example.memovaradegante.xploraapp.models.Places_Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +44,8 @@ public class StartFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
 
-    private List<Place> places;
-    private List<Place> placesFab;
+    private List<Places_Model> places;
+    private List<Places_Model> placesFab;
 
     private RecyclerView mRecyclerViewCountries;
     private RecyclerView.Adapter mAdapterCountries;
@@ -105,7 +105,7 @@ public class StartFragment extends Fragment {
         mAdapterCountries = new MyAdapterPlace(places,R.layout.recycler_view_item,new MyAdapterPlace.OnItemClickLister(){
 
             @Override
-            public void onItemClick(Place place, int position) {
+            public void onItemClick(Places_Model place, int position) {
                 Toast.makeText(getContext(),"OK", Toast.LENGTH_SHORT).show();
             }
         });
@@ -121,7 +121,7 @@ public class StartFragment extends Fragment {
         mAdapterFab = new MyAdapterPlace(placesFab,R.layout.recycler_view_item,new MyAdapterPlace.OnItemClickLister(){
 
             @Override
-            public void onItemClick(Place place, int position) {
+            public void onItemClick(Places_Model place, int position) {
                 Toast.makeText(getContext(),"OK", Toast.LENGTH_SHORT).show();
             }
         });
@@ -188,11 +188,11 @@ public class StartFragment extends Fragment {
     }
 
     //Obtenemos todos los lugares
-    private List<Place> getAllPlaces(){
-        return new ArrayList<Place>(){{
-            add(new Place("Mexico","Piramide","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/ch.jpg?alt=media&token=2f2923b5-5e84-4ec3-8fae-aaf212542d2a"));
-            add(new Place("Colombia","Volcan","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9dZei6FmqKa4l7eFT%2F15965071_1250192065027150_5835714856368535408_n.jpg?alt=media&token=bdf10fa9-bd5c-4e1a-b4bb-bd3da12beeeb"));
-            add(new Place("Chile","Desierto","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/CHias.jpg?alt=media&token=49bbb595-d68d-4866-8d51-cdb1d62f46fd"));
+    private List<Places_Model> getAllPlaces(){
+        return new ArrayList<Places_Model>(){{
+            add(new Places_Model("0","Mexico","Piramide","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/ch.jpg?alt=media&token=2f2923b5-5e84-4ec3-8fae-aaf212542d2a",""));
+            add(new Places_Model("1","Colombia","Volcan","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9dZei6FmqKa4l7eFT%2F15965071_1250192065027150_5835714856368535408_n.jpg?alt=media&token=bdf10fa9-bd5c-4e1a-b4bb-bd3da12beeeb",""));
+            add(new Places_Model("2","Chile","Desierto","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/CHias.jpg?alt=media&token=49bbb595-d68d-4866-8d51-cdb1d62f46fd",""));
         }
         };
     }
@@ -200,11 +200,11 @@ public class StartFragment extends Fragment {
     //Obtenemos todos los lugares favoritos
 
     //Obtenemos todos los lugares
-    private List<Place> getAllFabPlaces(){
-        return new ArrayList<Place>(){{
-            add(new Place("Colombia","Volcan","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9dZei6FmqKa4l7eFT%2F15965071_1250192065027150_5835714856368535408_n.jpg?alt=media&token=bdf10fa9-bd5c-4e1a-b4bb-bd3da12beeeb"));
-            add(new Place("Chile","Desierto","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/CHias.jpg?alt=media&token=49bbb595-d68d-4866-8d51-cdb1d62f46fd"));
-            add(new Place("Mexico","Piramide","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/ch.jpg?alt=media&token=2f2923b5-5e84-4ec3-8fae-aaf212542d2a"));
+    private List<Places_Model> getAllFabPlaces(){
+        return new ArrayList<Places_Model>(){{
+            add(new Places_Model("3","Colombia","Volcan","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9dZei6FmqKa4l7eFT%2F15965071_1250192065027150_5835714856368535408_n.jpg?alt=media&token=bdf10fa9-bd5c-4e1a-b4bb-bd3da12beeeb",""));
+            add(new Places_Model("4","Chile","Desierto","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/CHias.jpg?alt=media&token=49bbb595-d68d-4866-8d51-cdb1d62f46fd",""));
+            add(new Places_Model("5","Mexico","Piramide","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/ch.jpg?alt=media&token=2f2923b5-5e84-4ec3-8fae-aaf212542d2a",""));
         }
         };
     }

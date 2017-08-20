@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.memovaradegante.xploraapp.R;
-import com.example.memovaradegante.xploraapp.models.Place;
+import com.example.memovaradegante.xploraapp.models.Places_Model;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -19,12 +19,12 @@ import java.util.List;
  */
 
 public class MyAdapterPlace extends RecyclerView.Adapter<MyAdapterPlace.ViewHolder> {
-    private List<Place> places;
+    private List<Places_Model> places;
     private int layout;
     private OnItemClickLister lister;
     private Context context;
 
-    public MyAdapterPlace(List<Place> places, int layout, OnItemClickLister lister) {
+    public MyAdapterPlace(List<Places_Model> places, int layout, OnItemClickLister lister) {
         this.places = places;
         this.layout = layout;
         this.lister = lister;
@@ -60,7 +60,7 @@ public class MyAdapterPlace extends RecyclerView.Adapter<MyAdapterPlace.ViewHold
             imageViewCountry = (ImageView) itemView.findViewById(R.id.imageViewPoster);
         }
 
-        public void bind(final Place place,final OnItemClickLister lister){
+        public void bind(final Places_Model place,final OnItemClickLister lister){
             textViewCountry.setText(place.getCountry());
             Picasso.with(context).load(place.getPoster()).fit().into(imageViewCountry);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +73,8 @@ public class MyAdapterPlace extends RecyclerView.Adapter<MyAdapterPlace.ViewHold
 
     }
 
+
     public interface OnItemClickLister {
-        void onItemClick(Place place,int position);
+        void onItemClick(Places_Model place,int position);
     }
 }
