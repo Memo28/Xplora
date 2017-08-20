@@ -230,7 +230,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     if (!shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                         requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
                     } else {
-                        Toast.makeText(getActivity(), "Por favor concede el permiso", Toast.LENGTH_LONG);
+                        Toast.makeText(getActivity(), "Por favor concede el permiso", Toast.LENGTH_LONG).show();
                         Intent i = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         i.addCategory(Intent.CATEGORY_DEFAULT);
                         i.setData(Uri.parse("package:" + getActivity().getPackageName()));

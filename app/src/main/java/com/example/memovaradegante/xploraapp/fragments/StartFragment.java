@@ -1,6 +1,7 @@
 package com.example.memovaradegante.xploraapp.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,10 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.memovaradegante.xploraapp.R;
+import com.example.memovaradegante.xploraapp.activities.AddDestinyActivity;
 import com.example.memovaradegante.xploraapp.adapters.MyAdapterPlace;
 import com.example.memovaradegante.xploraapp.models.Place;
 
@@ -44,9 +45,17 @@ public class StartFragment extends Fragment {
 
 
     private List<Place> places;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mlayoutManager;
+    private List<Place> placesFab;
+
+    private RecyclerView mRecyclerViewCountries;
+    private RecyclerView.Adapter mAdapterCountries;
+    private RecyclerView.LayoutManager mlayoutManagerCountries;
+
+    private RecyclerView mRecyclerViewFab;
+    private RecyclerView.Adapter mAdapterFab;
+    private RecyclerView.LayoutManager mlayoutManagerFab;
+
+    private FloatingActionButton fabAdd;
 
 
     public StartFragment() {
@@ -86,9 +95,14 @@ public class StartFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_start, container, false);
         places = this.getAllPlaces();
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
-        mlayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
-        mAdapter = new MyAdapterPlace(places,R.layout.recycler_view_item,new MyAdapterPlace.OnItemClickLister(){
+        placesFab = this.getAllFabPlaces();
+
+        fabAdd = (FloatingActionButton) v.findViewById(R.id.fltActionBtnAdd);
+
+        //Inflando RecyclerView de Paises
+        mRecyclerViewCountries = (RecyclerView) v.findViewById(R.id.my_recycler_view_countries);
+        mlayoutManagerCountries = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        mAdapterCountries = new MyAdapterPlace(places,R.layout.recycler_view_item,new MyAdapterPlace.OnItemClickLister(){
 
             @Override
             public void onItemClick(Place place, int position) {
@@ -96,10 +110,27 @@ public class StartFragment extends Fragment {
             }
         });
 
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setLayoutManager(mlayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerViewCountries.setHasFixedSize(true);
+        mRecyclerViewCountries.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerViewCountries.setLayoutManager(mlayoutManagerCountries);
+        mRecyclerViewCountries.setAdapter(mAdapterCountries);
+
+        //Inflando RecyclerView de Favoritos
+        mRecyclerViewFab = (RecyclerView) v.findViewById(R.id.my_recycler_view_fab);
+        mlayoutManagerFab = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        mAdapterFab = new MyAdapterPlace(placesFab,R.layout.recycler_view_item,new MyAdapterPlace.OnItemClickLister(){
+
+            @Override
+            public void onItemClick(Place place, int position) {
+                Toast.makeText(getContext(),"OK", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mRecyclerViewFab.setHasFixedSize(true);
+        mRecyclerViewFab.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerViewFab.setLayoutManager(mlayoutManagerFab);
+        mRecyclerViewFab.setAdapter(mAdapterFab);
+
         return v;
     }
 
@@ -107,6 +138,14 @@ public class StartFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AddDestinyActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -154,6 +193,18 @@ public class StartFragment extends Fragment {
             add(new Place("Mexico","Piramide","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/ch.jpg?alt=media&token=2f2923b5-5e84-4ec3-8fae-aaf212542d2a"));
             add(new Place("Colombia","Volcan","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9dZei6FmqKa4l7eFT%2F15965071_1250192065027150_5835714856368535408_n.jpg?alt=media&token=bdf10fa9-bd5c-4e1a-b4bb-bd3da12beeeb"));
             add(new Place("Chile","Desierto","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/CHias.jpg?alt=media&token=49bbb595-d68d-4866-8d51-cdb1d62f46fd"));
+        }
+        };
+    }
+
+    //Obtenemos todos los lugares favoritos
+
+    //Obtenemos todos los lugares
+    private List<Place> getAllFabPlaces(){
+        return new ArrayList<Place>(){{
+            add(new Place("Colombia","Volcan","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9dZei6FmqKa4l7eFT%2F15965071_1250192065027150_5835714856368535408_n.jpg?alt=media&token=bdf10fa9-bd5c-4e1a-b4bb-bd3da12beeeb"));
+            add(new Place("Chile","Desierto","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/CHias.jpg?alt=media&token=49bbb595-d68d-4866-8d51-cdb1d62f46fd"));
+            add(new Place("Mexico","Piramide","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/ch.jpg?alt=media&token=2f2923b5-5e84-4ec3-8fae-aaf212542d2a"));
         }
         };
     }

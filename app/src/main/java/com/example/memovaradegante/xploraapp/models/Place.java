@@ -5,18 +5,27 @@ package com.example.memovaradegante.xploraapp.models;
  */
 
 public class Place {
+    public String title;
     public String country;
-    public String name;
     public String description;
     public String type;
     public String poster;
 
-    public Place(String country, String name, String description, String type, String poster) {
+    public Place( String title,String country, String description, String type, String poster) {
         this.country = country;
-        this.name = name;
+        this.title = title;
         this.description = description;
         this.type = type;
         this.poster = poster;
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getCountry() {
@@ -25,14 +34,6 @@ public class Place {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {

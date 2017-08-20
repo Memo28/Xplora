@@ -24,7 +24,12 @@
         </activity>
         <activity
             android:name=".activities.HomeActivity"
-            android:label="@string/title_activity_home"></activity>
+            android:label="@string/title_activity_home" />
+        <activity android:name=".activities.AddDestinyActivity" android:parentActivityName=".activities.HomeActivity"
+            android:screenOrientation="portrait">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activities.HomeActivity"/>
+        </activity>
+
     </application>
 
 </manifest>
