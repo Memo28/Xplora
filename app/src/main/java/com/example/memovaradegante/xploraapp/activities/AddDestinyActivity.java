@@ -72,7 +72,7 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
 
 
     private String[] costs = {"Bajo", "Medio", "Alto"};
-    private int[] coins = {R.drawable.coin_g, R.drawable.coin_g, R.drawable.coin_g};
+    private int[] coins = {R.drawable.moneda_bronce, R.drawable.moneda_plata, R.drawable.moned_oro};
 
 
     private static final String TAG = "AddDestinyActivity";

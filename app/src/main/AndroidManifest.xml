@@ -15,10 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC5xq_yGZNg_uFNcQVseBlk0JCGaUEo9Y0"/>
+            android:value="AIzaSyC5xq_yGZNg_uFNcQVseBlk0JCGaUEo9Y0" />
 
         <activity
             android:name=".activities.MainActivity"
@@ -33,11 +32,20 @@
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/title_activity_home" />
-        <activity android:name=".activities.AddDestinyActivity" android:parentActivityName=".activities.HomeActivity"
+        <activity
+            android:name=".activities.AddDestinyActivity"
+            android:parentActivityName=".activities.HomeActivity"
             android:screenOrientation="portrait">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".activities.HomeActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.HomeActivity" />
         </activity>
-
-
+        <activity android:name=".activities.ListDestiniesActivity"
+            android:parentActivityName=".activities.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.HomeActivity" />
+        </activity>
     </application>
+
 </manifest>
