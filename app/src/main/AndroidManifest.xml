@@ -40,11 +40,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
         </activity>
-        <activity android:name=".activities.ListDestiniesActivity"
+        <activity
+            android:name=".activities.ListDestiniesActivity"
             android:parentActivityName=".activities.HomeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
+        </activity>
+        <activity android:name=".activities.PostDestinyActivity"
+            android:parentActivityName=".activities.ListDestiniesActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ListDestiniesActivity"/>
         </activity>
     </application>
 

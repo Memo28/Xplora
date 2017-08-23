@@ -1,5 +1,6 @@
 package com.example.memovaradegante.xploraapp.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -38,6 +39,12 @@ public class ListDestiniesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Places_Model place, int position) {
                 Log.e("Push",place.getTitle());
+
+                //Pass Information to the Fragment
+                Bundle bundle = new Bundle();
+                bundle.putString("Country","Mexico");
+                Intent intent = new Intent(getApplicationContext(), PostDestinyActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/back_2"
+    tools:context="com.example.memovaradegante.xploraapp.activities.PostDestinyActivity">
+
+
+    <ImageView
+        android:layout_margin="5dp"
+        android:src="@drawable/xplora_logo"
+        android:background="@drawable/roundcorner"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/imageView" />
+    <TextView
+        android:text="@string/recommendation"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp"
+        android:id="@+id/textView" />
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/recyclerView"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_above="@+id/linearLayout" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/roundcorner"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/recyclerView"
+        android:layout_alignStart="@+id/recyclerView"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:id="@+id/linearLayout">
+
+        <EditText
+            android:layout_width="306dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <ImageButton
+            android:background="@null"
+            android:src="@android:drawable/ic_menu_send"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</RelativeLayout>
