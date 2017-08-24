@@ -64,10 +64,10 @@ public class MyAdapterListPlace extends RecyclerView.Adapter<MyAdapterListPlace.
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textViewTitle = (TextView) itemView.findViewById(R.id.text_view_List_Title);
-            textViewCity = (TextView) itemView.findViewById(R.id.text_view_List_city);
+            textViewTitle = (TextView) itemView.findViewById(R.id.text_view_User_Comment);
+            textViewCity = (TextView) itemView.findViewById(R.id.text_view_Information_Comment);
             ratingBarPlace = (RatingBar) itemView.findViewById(R.id.ratingBar_List_Place);
-            imageViewPlace = (ImageView) itemView.findViewById(R.id.imageView_List_Place);
+            imageViewPlace = (ImageView) itemView.findViewById(R.id.imageView_Comment);
         }
         public void bind(final Places_Model place, final OnItemClickListener listener){
             textViewTitle.setText(place.getTitle());
