@@ -1,12 +1,18 @@
 package com.example.memovaradegante.xploraapp.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.memovaradegante.xploraapp.R;
 import com.example.memovaradegante.xploraapp.adapters.MyAdapterComment;
@@ -38,7 +44,43 @@ public class PostDestinyActivity extends AppCompatActivity {
                 new MyAdapterComment.OnItemClickListener() {
                     @Override
                     public void onItemClick(Comment comment, int position) {
-                     Log.e("OK",comment.getUser());
+                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(PostDestinyActivity.this);
+                        View mView = getLayoutInflater().inflate(R.layout.dialog_comment,null);
+                        TextView textViewUserDialog = (TextView) mView.findViewById(R.id.textViewUserDialog);
+                        TextView textViewDateDialo = (TextView) mView.findViewById(R.id.textViewDateDialog);
+                        TextView textView = (TextView) mView.findViewById(R.id.textViewCommentDialog);
+                        ImageButton btnContacDialog = (ImageButton) mView.findViewById(R.id.imageButtonContact);
+
+                        btnContacDialog.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(PostDestinyActivity.this);
+                                confirmBuilder.setIcon(R.drawable.ic_audiotrack);
+                                confirmBuilder.setTitle("Contactar Usuario");
+                                confirmBuilder.setMessage("Mensaje");
+                                confirmBuilder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                        Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
+                                        startActivity(intent);
+                                    }
+                                });
+                                confirmBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                });
+                                AlertDialog alertDialogConfirm = confirmBuilder.create();
+                                alertDialogConfirm.show();
+
+                            }
+                        });
+                        Log.e("OK",comment.getUser());
+                        mBuilder.setView(mView);
+                        AlertDialog dialog = mBuilder.create();
+                        dialog.show();
                     }
                 });
 

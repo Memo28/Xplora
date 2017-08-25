@@ -22,6 +22,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +32,8 @@
         </activity>
         <activity
             android:name=".activities.HomeActivity"
-            android:label="@string/title_activity_home" />
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.AddDestinyActivity"
             android:parentActivityName=".activities.HomeActivity"
@@ -42,17 +44,21 @@
         </activity>
         <activity
             android:name=".activities.ListDestiniesActivity"
-            android:parentActivityName=".activities.HomeActivity">
+            android:parentActivityName=".activities.HomeActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
         </activity>
-        <activity android:name=".activities.PostDestinyActivity"
-            android:parentActivityName=".activities.ListDestiniesActivity">
+        <activity
+            android:name=".activities.PostDestinyActivity"
+            android:parentActivityName=".activities.ListDestiniesActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.ListDestiniesActivity"/>
+                android:value=".activities.ListDestiniesActivity" />
         </activity>
+        <activity android:name=".activities.ChatActivity"></activity>
     </application>
 
 </manifest>
