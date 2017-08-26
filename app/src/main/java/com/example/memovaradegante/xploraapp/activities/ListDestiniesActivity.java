@@ -13,6 +13,12 @@ import com.example.memovaradegante.xploraapp.R;
 import com.example.memovaradegante.xploraapp.adapters.MyAdapterListPlace;
 import com.example.memovaradegante.xploraapp.adapters.MyAdapterPlace;
 import com.example.memovaradegante.xploraapp.models.Places_Model;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +30,28 @@ public class ListDestiniesActivity extends AppCompatActivity {
     private RecyclerView.Adapter madapter;
     private RecyclerView.LayoutManager mlayoutManager;
 
+    private String City;
 
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_destinies);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("places");
+
+
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null){
+            City = extras.getString("Country");
+        }else {
+            Log.e("Erro","No Info");
+        }
+
 
         places = this.getAllPlaces();
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_list_destinies);
@@ -58,11 +80,30 @@ public class ListDestiniesActivity extends AppCompatActivity {
 
     //Obtenemos todos los lugares
     private List<Places_Model> getAllPlaces(){
-        return new ArrayList<Places_Model>(){{
-            add(new Places_Model("0","Piramide","Mexico","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/ch.jpg?alt=media&token=2f2923b5-5e84-4ec3-8fae-aaf212542d2a",""));
-            add(new Places_Model("1","Volcan","Colombia","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9dZei6FmqKa4l7eFT%2F15965071_1250192065027150_5835714856368535408_n.jpg?alt=media&token=bdf10fa9-bd5c-4e1a-b4bb-bd3da12beeeb",""));
-            add(new Places_Model("2","Desierto","Chile","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/CHias.jpg?alt=media&token=49bbb595-d68d-4866-8d51-cdb1d62f46fd",""));
-        }
-        };
+
+        final ArrayList<Places_Model> places_list = new ArrayList<Places_Model>();
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        String city = ds.child("country").getValue().toString();
+                        if (city.contains(City)){
+                            Places_Model pl = ds.getValue(Places_Model.class);
+                            places_list.add(pl);
+                            Log.e("Poster",pl.getPoster());
+                            Log.e("OK",ds.child("country").toString());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return places_list;
     }
 }

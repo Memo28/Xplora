@@ -180,7 +180,8 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     @SuppressWarnings("VisibleForTests") Uri uriImage = taskSnapshot.getDownloadUrl();
-                    Places_Model destiny = new Places_Model(id,title,place,description,type,uriImageAddDestiny.toString(),cost);
+
+                    Places_Model destiny = new Places_Model(id,title,place,description,type,uriImage.toString(),cost);
                     databasePlace.child(id).setValue(destiny);
                     Toast.makeText(getApplicationContext(),"Destino agregado correctamente",Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();

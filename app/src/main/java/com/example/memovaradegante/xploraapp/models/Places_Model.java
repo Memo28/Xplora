@@ -14,6 +14,10 @@ public class Places_Model {
     public String poster;
     public String cost;
 
+    public Places_Model(){
+
+    }
+
     public Places_Model(String id, String title, String country, String description, String type, String poster,String cost) {
         this.cost = cost;
         this.id=id;
