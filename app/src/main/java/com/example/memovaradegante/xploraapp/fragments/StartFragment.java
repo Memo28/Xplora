@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,12 @@ import com.example.memovaradegante.xploraapp.activities.AddDestinyActivity;
 import com.example.memovaradegante.xploraapp.activities.ListDestiniesActivity;
 import com.example.memovaradegante.xploraapp.adapters.MyAdapterPlace;
 import com.example.memovaradegante.xploraapp.models.Places_Model;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +66,16 @@ public class StartFragment extends Fragment {
     private RecyclerView.LayoutManager mlayoutManagerFab;
 
     private FloatingActionButton fabAdd;
+
+
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
+
+    private String user_actual;
+    private String photo_UrlUser;
+
+
 
 
     public StartFragment() {
@@ -112,6 +129,8 @@ public class StartFragment extends Fragment {
                 //Pass Information to the Fragment
                 Intent intent = new Intent(getActivity(), ListDestiniesActivity.class);
                 intent.putExtra("Country",place.getCountry());
+                intent.putExtra("user_actual",user_actual);
+                intent.putExtra("photo_UrlUser",photo_UrlUser);
                 startActivity(intent);
             }
         });
@@ -150,7 +169,36 @@ public class StartFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), AddDestinyActivity.class);
+                intent.putExtra("user_actual",user_actual);
+                intent.putExtra("photo_UrlUser",photo_UrlUser);
                 startActivity(intent);
+            }
+        });
+
+
+        //Obtenemos informacion del Usuario
+        firebaseAuth = FirebaseAuth.getInstance();
+        user_actual = firebaseAuth.getCurrentUser().getUid();
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        String user = ds.child("id").getValue().toString();
+                        if (user.equals(user_actual)){
+                            photo_UrlUser = ds.child("urlImage").getValue().toString();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 

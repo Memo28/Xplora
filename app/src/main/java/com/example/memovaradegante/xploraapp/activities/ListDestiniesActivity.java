@@ -30,10 +30,15 @@ public class ListDestiniesActivity extends AppCompatActivity {
     private RecyclerView.Adapter madapter;
     private RecyclerView.LayoutManager mlayoutManager;
 
-    private String City;
+    private String city_pass;
+    private String user_actual;
+    private String photo_UrlUser;
+
 
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +47,18 @@ public class ListDestiniesActivity extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("places");
-
-
         Bundle extras = getIntent().getExtras();
 
         if (extras != null){
-            City = extras.getString("Country");
+            city_pass = extras.getString("Country");
+            user_actual = extras.getString("user_actual");
+            photo_UrlUser = extras.getString("photo_UrlUser");
         }else {
-            Log.e("Erro","No Info");
+            onRestoreInstanceState(savedInstanceState);
+            Log.e("City",city_pass);
+
         }
+
 
 
         places = this.getAllPlaces();
@@ -62,10 +70,11 @@ public class ListDestiniesActivity extends AppCompatActivity {
             public void onItemClick(Places_Model place, int position) {
                 Log.e("Push",place.getTitle());
 
-                //Pass Information to the Fragment
-                Bundle bundle = new Bundle();
-                bundle.putString("Country","Mexico");
+                //Pass Information to the PostDestinyActivity
                 Intent intent = new Intent(getApplicationContext(), PostDestinyActivity.class);
+                intent.putExtra("Id",place.getId());
+                intent.putExtra("user_actual",user_actual);
+                intent.putExtra("photo_UrlUser",photo_UrlUser);
                 startActivity(intent);
             }
         });
@@ -89,11 +98,9 @@ public class ListDestiniesActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()){
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
                         String city = ds.child("country").getValue().toString();
-                        if (city.contains(City)){
+                        if (city.contains(city_pass)){
                             Places_Model pl = ds.getValue(Places_Model.class);
                             places_list.add(pl);
-                            Log.e("Poster",pl.getPoster());
-                            Log.e("OK",ds.child("country").toString());
                         }
                     }
                 }
@@ -105,5 +112,18 @@ public class ListDestiniesActivity extends AppCompatActivity {
             }
         });
         return places_list;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("city",city_pass);
+        Log.e("onSaved",outState.getString("city"));
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        city_pass = savedInstanceState.getString("city");
     }
 }

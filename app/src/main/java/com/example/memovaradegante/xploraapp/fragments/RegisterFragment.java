@@ -90,8 +90,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         btnRegister = (Button) getView().findViewById(R.id.buttonRegister);
         spinnerCountry = (Spinner) getView().findViewById(R.id.spinnerCountry);
         imageButtonPhoto = (ImageButton) getView().findViewById(R.id.imageButtonPhotoRegister);
-        Picasso.with(getActivity()).load(R.drawable.camera_profile)
-                .transform(new CropCircleTransformation()).fit().into(imageButtonPhoto);
+        Picasso.with(getActivity()).load(R.drawable.camera_profile).fit().into(imageButtonPhoto);
 
 
         //Obtenemos los paises para el Spinner
@@ -164,7 +163,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(getContext(),"Registro exitos",Toast.LENGTH_LONG).show();
-                            addUser(name,email,psw,country);
+                            String uid= firebaseAuth.getCurrentUser().getUid();
+                            addUser(uid,name,email,psw,country);
                             progressDialog.dismiss();
                             //Mandar al Usuaeio a la pagina Prinicipal
                             getActivity().finish();
@@ -188,7 +188,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     }
 
     //Agregamos informacion del usuario
-    private void addUser(final String name,final String email, final String country,final String psw) {
+    private void addUser(final String uid, final String name,final String email, final String country,final String psw) {
         final String id = databaseUser.push().getKey();
         final String pathImageUser = "profileImage"+id;
 
@@ -199,7 +199,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     @SuppressWarnings("VisibleForTests") Uri uriImage = taskSnapshot.getDownloadUrl();
-                    User user = new User(id,name,email,country,psw,uriImage.toString());
+                    User user = new User(uid,name,email,country,psw,uriImage.toString());
                     databaseUser.child(id).setValue(user);
                 }
             });

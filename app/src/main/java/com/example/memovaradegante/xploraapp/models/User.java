@@ -49,6 +49,18 @@ public class User {
         this.psw = psw;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
     public String getCountry() {
         return country;
     }

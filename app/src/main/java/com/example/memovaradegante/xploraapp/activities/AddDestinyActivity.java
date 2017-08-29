@@ -270,7 +270,7 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-            Log.i(TAG, "Fetching details for ID: " + item.placeId);
+            Log.i(TAG, "Fetching details for id: " + item.placeId);
         }
     };
 

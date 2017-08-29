@@ -1,53 +1,76 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.example.memovaradegante.xploraapp.fragments.LogInFragment">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:weightSum="1">
 
         <ImageView
-            android:layout_marginTop="10dp"
+            android:background="@drawable/roundcorner"
+            android:layout_margin="10dp"
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
-            android:layout_height="102dp"
+            android:layout_height="120dp"
             app:srcCompat="@drawable/xplora_logo"
             android:layout_weight="0.16" />
 
-        <EditText
-            android:id="@+id/editTextEmail"
-            android:layout_width="231dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_gravity="center"
-            android:hint="@string/ing_usr"
-            android:layout_marginBottom="20dp"
-            android:inputType="textEmailAddress" />
+        <LinearLayout
+            android:paddingBottom="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/roundcorner"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
 
-        <EditText
-            android:id="@+id/editTextPsw"
-            android:layout_width="231dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_gravity="center"
-            android:hint="@string/psw"
-            android:layout_marginBottom="20dp"
-            android:inputType="textPassword" />
+                android:textStyle="normal"
+                android:id="@+id/editTextEmail"
+                android:layout_width="231dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_gravity="center"
+                android:hint="@string/ing_usr"
+                android:layout_marginBottom="20dp"
+                android:inputType="textEmailAddress" />
 
-        <Button
-            android:id="@+id/buttonLogin"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:text="@string/inc_ses" />
+            <EditText
+                android:id="@+id/editTextPsw"
+                android:layout_width="231dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_gravity="center"
+                android:hint="@string/psw"
+                android:layout_marginBottom="20dp"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/buttonLogin"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="@string/inc_ses" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
 
 </FrameLayout>
+</ScrollView>

@@ -5,7 +5,7 @@ package com.example.memovaradegante.xploraapp.models;
  */
 
 public class Comment {
-    public String ID;
+    public String id;
     public String user;
     public String userID;
     public String userImage;
@@ -14,8 +14,8 @@ public class Comment {
     public String description;
 
 
-    public Comment(String ID, String user, String userID, String userImage, String likes, String dislikes, String description) {
-        this.ID = ID;
+    public Comment(String id, String user, String userID, String userImage, String likes, String dislikes, String description) {
+        this.id = id;
         this.user = user;
         this.userID = userID;
         this.userImage = userImage;
@@ -32,12 +32,12 @@ public class Comment {
         this.userImage = userImage;
     }
 
-    public String getID() {
-        return ID;
+    public String getId() {
+        return id;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUser() {

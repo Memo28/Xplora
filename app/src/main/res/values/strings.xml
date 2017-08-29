@@ -45,5 +45,9 @@
 
     <string name="more_info">Más Información</string>
 
+    <string name="errorNoComment">Por favor escriba un comentario...</string>
+
+
+
 
 </resources>

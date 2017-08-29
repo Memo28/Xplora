@@ -1,23 +1,36 @@
 package com.example.memovaradegante.xploraapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.memovaradegante.xploraapp.R;
 import com.example.memovaradegante.xploraapp.fragments.ChatFragment;
 import com.example.memovaradegante.xploraapp.fragments.ProfileFragment;
 import com.example.memovaradegante.xploraapp.fragments.SavedFragment;
 import com.example.memovaradegante.xploraapp.fragments.StartFragment;
+import com.example.memovaradegante.xploraapp.models.Places_Model;
+import com.example.memovaradegante.xploraapp.models.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class HomeActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -57,6 +70,8 @@ public class HomeActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.content, new StartFragment()).commit();
+
+
     }
 
 }
