@@ -1,7 +1,9 @@
 package com.example.memovaradegante.xploraapp.activities;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,8 @@ import com.example.memovaradegante.xploraapp.adapters.MyAdapterComment;
 import com.example.memovaradegante.xploraapp.adapters.MyAdapterListPlace;
 import com.example.memovaradegante.xploraapp.models.Comment;
 import com.example.memovaradegante.xploraapp.models.Places_Model;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static android.R.attr.delay;
+
 public class PostDestinyActivity extends AppCompatActivity {
 
     private List<Comment> comments;
@@ -45,10 +51,13 @@ public class PostDestinyActivity extends AppCompatActivity {
     private String id_Destitny;
     private String user_actual;
     private String photo_UrlUser;
+    private String name_actual_u;
 
 
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
+
 
 
     private EditText editTextComment;
@@ -65,6 +74,8 @@ public class PostDestinyActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("comments");
+        progressDialog = new ProgressDialog(this);
+
 
 
 
@@ -73,6 +84,7 @@ public class PostDestinyActivity extends AppCompatActivity {
             id_Destitny = extras.getString("Id");
             user_actual = extras.getString("user_actual");
             photo_UrlUser = extras.getString("photo_UrlUser");
+            name_actual_u = extras.getString("name_actual_u");
         }else {
             Log.e("Erro","No Info");
         }
@@ -86,15 +98,33 @@ public class PostDestinyActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(editTextComment.getText().toString().trim())){
                     Toast.makeText(getApplicationContext(),R.string.errorNoComment,Toast.LENGTH_SHORT).show();
                 }else{
+
+                    progressDialog.setMessage("Agregando Comentario...");
+                    progressDialog.show();
+
                     final String id = databaseReference.push().getKey();
 
                     String uid = firebaseAuth.getCurrentUser().getUid();
-                    String user = firebaseAuth.getCurrentUser().getEmail();
-                    String comment_d = editTextComment.getText().toString().trim();
 
-                    Comment comment = new Comment(id_Destitny,user,uid,photo_UrlUser,"0","0",comment_d);
-                    databaseReference.child(id).setValue(comment);
-                    Log.e("NO Vacio","OK");
+                    String comment_d = editTextComment.getText().toString().trim();
+                    Comment comment = new Comment(id_Destitny,name_actual_u,uid,photo_UrlUser,"0","0",comment_d);
+                    databaseReference.child(id).setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"Agregado Correctamente...",Toast.LENGTH_SHORT).show();
+                            finish();
+                            startActivity(getIntent());
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(),"Error al agregar...",Toast.LENGTH_SHORT).show();
+                            finish();
+                            startActivity(getIntent());
+                        }
+                    });
                 }
             }
         });
@@ -159,18 +189,19 @@ public class PostDestinyActivity extends AppCompatActivity {
 
     private List<Comment> getAllComments() {
 
-        /*final ArrayList<Comment> comments_list = new ArrayList<Comment>();
+        final ArrayList<Comment> comments_list = new ArrayList<Comment>();
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
-                        String comment = ds.child("comment").getValue().toString();
-                        if (comment.contains(id_Destitny)){
-                            Comment pl = ds.getValue(Comment.class);
-                            comments_list.add(pl);
+                        String place_id = ds.child("id").getValue().toString();
+                        if(place_id.equals(id_Destitny)){
+                            Comment comment = ds.getValue(Comment.class);
+                            comments_list.add(comment);
                         }
+
                     }
                 }
             }
@@ -180,13 +211,7 @@ public class PostDestinyActivity extends AppCompatActivity {
 
             }
         });
-        return comments_list;*/
-        return new ArrayList<Comment>(){{
-            add(new Comment("21","Memo","23423","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9T_rFDwsYhr553CtZ?alt=media&token=2554cc75-1ef4-4f5a-aade-5a38c3ec6fbf","21","2","isadjsadjasdjsadjsadjsakdjdsjkskjsadkjsads"));
-            add(new Comment("21","Memo","23423","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9T_rFDwsYhr553CtZ?alt=media&token=2554cc75-1ef4-4f5a-aade-5a38c3ec6fbf","21","2","isadjsadjasdjsadjsadjsakdjdsjkskjsadkjsads"));
-            add(new Comment("21","Memo","23423","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9T_rFDwsYhr553CtZ?alt=media&token=2554cc75-1ef4-4f5a-aade-5a38c3ec6fbf","21","2","isadjsadjasdjsadjsadjsakdjdsjkskjsadkjsads"));
-        }
-        };
+        return comments_list;
 
     }
 

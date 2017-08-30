@@ -33,6 +33,7 @@ public class ListDestiniesActivity extends AppCompatActivity {
     private String city_pass;
     private String user_actual;
     private String photo_UrlUser;
+    private String name_actual_u;
 
 
     private DatabaseReference databaseReference;
@@ -53,6 +54,7 @@ public class ListDestiniesActivity extends AppCompatActivity {
             city_pass = extras.getString("Country");
             user_actual = extras.getString("user_actual");
             photo_UrlUser = extras.getString("photo_UrlUser");
+            name_actual_u = extras.getString("name_actual_u");
         }else {
             onRestoreInstanceState(savedInstanceState);
             Log.e("City",city_pass);
@@ -75,6 +77,7 @@ public class ListDestiniesActivity extends AppCompatActivity {
                 intent.putExtra("Id",place.getId());
                 intent.putExtra("user_actual",user_actual);
                 intent.putExtra("photo_UrlUser",photo_UrlUser);
+                intent.putExtra("name_actual_u",name_actual_u);
                 startActivity(intent);
             }
         });

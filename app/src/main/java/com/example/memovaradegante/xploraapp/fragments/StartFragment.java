@@ -74,6 +74,7 @@ public class StartFragment extends Fragment {
 
     private String user_actual;
     private String photo_UrlUser;
+    private String name_actual_u;
 
 
 
@@ -131,6 +132,7 @@ public class StartFragment extends Fragment {
                 intent.putExtra("Country",place.getCountry());
                 intent.putExtra("user_actual",user_actual);
                 intent.putExtra("photo_UrlUser",photo_UrlUser);
+                intent.putExtra("name_actual_u",name_actual_u);
                 startActivity(intent);
             }
         });
@@ -171,6 +173,7 @@ public class StartFragment extends Fragment {
                 Intent intent = new Intent(getContext(), AddDestinyActivity.class);
                 intent.putExtra("user_actual",user_actual);
                 intent.putExtra("photo_UrlUser",photo_UrlUser);
+                intent.putExtra("name_actual_u",name_actual_u);
                 startActivity(intent);
             }
         });
@@ -191,6 +194,7 @@ public class StartFragment extends Fragment {
                         String user = ds.child("id").getValue().toString();
                         if (user.equals(user_actual)){
                             photo_UrlUser = ds.child("urlImage").getValue().toString();
+                            name_actual_u = ds.child("name").getValue().toString();
                         }
                     }
                 }

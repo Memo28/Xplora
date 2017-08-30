@@ -24,6 +24,10 @@ public class Comment {
         this.description = description;
     }
 
+    public Comment(){
+
+    }
+
     public String getUserImage() {
         return userImage;
     }
