@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +35,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 import static android.R.attr.delay;
 
@@ -55,6 +59,8 @@ public class PostDestinyActivity extends AppCompatActivity {
 
 
     private DatabaseReference databaseReference;
+    private DatabaseReference databaseReferenceDestinies;
+
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
@@ -62,6 +68,7 @@ public class PostDestinyActivity extends AppCompatActivity {
 
     private EditText editTextComment;
     private ImageButton btnAddComment;
+    private ImageView imageViewComment;
 
 
 
@@ -74,6 +81,7 @@ public class PostDestinyActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("comments");
+        databaseReferenceDestinies = FirebaseDatabase.getInstance().getReference("places");
         progressDialog = new ProgressDialog(this);
 
 
@@ -91,6 +99,7 @@ public class PostDestinyActivity extends AppCompatActivity {
 
         editTextComment = (EditText) findViewById(R.id.editTextAddComment);
         btnAddComment = (ImageButton) findViewById(R.id.imageButtonAddComment);
+        imageViewComment = (ImageView) findViewById(R.id.imageViewCommentsV);
 
         btnAddComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,8 +138,7 @@ public class PostDestinyActivity extends AppCompatActivity {
             }
         });
 
-
-
+        //Buscar la imagen del destino
 
         comments = this.getAllComments();
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewComments);
@@ -184,6 +192,33 @@ public class PostDestinyActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mlayoutManager);
         mRecyclerView.setAdapter(madapter);
 
+        getImagesDestiny();
+
+
+
+    }
+
+    private void getImagesDestiny() {
+        databaseReferenceDestinies.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        String place_id = ds.child("id").getValue().toString();
+                        if(place_id.equals(id_Destitny)){
+                            Picasso.with(getApplicationContext()).load(ds.child("poster").getValue().toString())
+                                    .fit().into(imageViewComment);
+                            Log.e("Photo",ds.child("poster").getValue().toString());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -201,7 +236,6 @@ public class PostDestinyActivity extends AppCompatActivity {
                             Comment comment = ds.getValue(Comment.class);
                             comments_list.add(comment);
                         }
-
                     }
                 }
             }
