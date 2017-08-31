@@ -138,8 +138,6 @@ public class PostDestinyActivity extends AppCompatActivity {
             }
         });
 
-        //Buscar la imagen del destino
-
         comments = this.getAllComments();
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewComments);
         mlayoutManager = new LinearLayoutManager(this);
@@ -150,9 +148,20 @@ public class PostDestinyActivity extends AppCompatActivity {
                         AlertDialog.Builder mBuilder = new AlertDialog.Builder(PostDestinyActivity.this);
                         View mView = getLayoutInflater().inflate(R.layout.dialog_comment,null);
                         TextView textViewUserDialog = (TextView) mView.findViewById(R.id.textViewUserDialog);
-                        TextView textViewDateDialo = (TextView) mView.findViewById(R.id.textViewDateDialog);
-                        TextView textView = (TextView) mView.findViewById(R.id.textViewCommentDialog);
+                        TextView textViewDescription = (TextView) mView.findViewById(R.id.textViewCommentDialog);
+                        ImageView imageViewDialog = (ImageView) mView.findViewById(R.id.imageViewDialog);
                         ImageButton btnContacDialog = (ImageButton) mView.findViewById(R.id.imageButtonContact);
+
+                        //Agregamos informacion a los TextView
+                        Picasso.with(getApplicationContext()).load(comment.getUserImage())
+                                .transform(new CropCircleTransformation()).fit().into(imageViewDialog);
+
+                        textViewUserDialog.setText(comment.getUser());
+                        textViewDescription.setText(comment.getDescription());
+
+
+
+
 
                         btnContacDialog.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -180,7 +189,7 @@ public class PostDestinyActivity extends AppCompatActivity {
 
                             }
                         });
-                        Log.e("OK",comment.getUser());
+
                         mBuilder.setView(mView);
                         AlertDialog dialog = mBuilder.create();
                         dialog.show();

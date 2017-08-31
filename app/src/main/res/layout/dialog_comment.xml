@@ -32,15 +32,6 @@
             android:layout_toRightOf="@+id/imageViewDialog"
             android:text="TextView" />
 
-        <TextView
-            android:id="@+id/textViewDateDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textViewUserDialog"
-            android:layout_alignStart="@+id/textViewUserDialog"
-            android:layout_below="@+id/textViewUserDialog"
-            android:text="TextView" />
-
     </RelativeLayout>
 
     <View
@@ -64,8 +55,8 @@
     <ImageButton
         android:id="@+id/imageButtonContact"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        app:srcCompat="@drawable/camera_profile" />
+        android:layout_height="53dp"
+        app:srcCompat="@mipmap/ic_contact_user" />
 
 
 </LinearLayout>
