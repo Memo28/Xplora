@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_add_destiny"
-        android:icon="@mipmap/ic_add_destiny"
+        android:icon="@mipmap/ic_add_fav"
         android:layout_height="match_parent"
         android:orderInCategory="100"
         android:title="@string/Add"

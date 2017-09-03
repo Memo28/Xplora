@@ -8,13 +8,14 @@ public class Comment {
     public String id;
     public String user;
     public String userID;
+    public String comment_Id;
     public String userImage;
     public String likes;
     public String dislikes;
     public String description;
 
 
-    public Comment(String id, String user, String userID, String userImage, String likes, String dislikes, String description) {
+    public Comment(String id, String user, String userID,String comment_Id, String userImage, String likes, String dislikes, String description) {
         this.id = id;
         this.user = user;
         this.userID = userID;
@@ -22,10 +23,19 @@ public class Comment {
         this.likes = likes;
         this.dislikes = dislikes;
         this.description = description;
+        this.comment_Id = comment_Id;
     }
 
     public Comment(){
 
+    }
+
+    public String getComment_Id() {
+        return comment_Id;
+    }
+
+    public void setComment_Id(String comment_Id) {
+        this.comment_Id = comment_Id;
     }
 
     public String getUserImage() {

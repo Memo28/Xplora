@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -77,7 +78,7 @@ public class PostDestinyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_destiny);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("comments");
@@ -116,7 +117,7 @@ public class PostDestinyActivity extends AppCompatActivity {
                     String uid = firebaseAuth.getCurrentUser().getUid();
 
                     String comment_d = editTextComment.getText().toString().trim();
-                    Comment comment = new Comment(id_Destitny,name_actual_u,uid,photo_UrlUser,"0","0",comment_d);
+                    Comment comment = new Comment(id_Destitny,name_actual_u,uid,id,photo_UrlUser,"0","0",comment_d);
                     databaseReference.child(id).setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -258,4 +259,9 @@ public class PostDestinyActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_post_destiny,menu);
+        return true;
+    }
 }
