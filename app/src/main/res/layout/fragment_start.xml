@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:text="@string/fab"
+            android:text="@string/fab_m"
             android:textStyle="bold"
             android:textSize="18dp"
             android:layout_marginLeft="5dp"

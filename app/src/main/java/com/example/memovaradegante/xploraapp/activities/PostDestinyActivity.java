@@ -13,8 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,28 +23,22 @@ import android.widget.Toast;
 
 import com.example.memovaradegante.xploraapp.R;
 import com.example.memovaradegante.xploraapp.adapters.MyAdapterComment;
-import com.example.memovaradegante.xploraapp.adapters.MyAdapterListPlace;
 import com.example.memovaradegante.xploraapp.models.Comment;
-import com.example.memovaradegante.xploraapp.models.Places_Model;
+import com.example.memovaradegante.xploraapp.models.Favorito;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-
-import static android.R.attr.delay;
 
 public class PostDestinyActivity extends AppCompatActivity {
 
@@ -57,10 +51,13 @@ public class PostDestinyActivity extends AppCompatActivity {
     private String user_actual;
     private String photo_UrlUser;
     private String name_actual_u;
+    private String country_place;
+    private String image_place;
 
 
     private DatabaseReference databaseReference;
     private DatabaseReference databaseReferenceDestinies;
+    private DatabaseReference databaseReferenceFav;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
@@ -83,6 +80,7 @@ public class PostDestinyActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("comments");
         databaseReferenceDestinies = FirebaseDatabase.getInstance().getReference("places");
+        databaseReferenceFav = FirebaseDatabase.getInstance().getReference("favoritos");
         progressDialog = new ProgressDialog(this);
 
 
@@ -92,8 +90,10 @@ public class PostDestinyActivity extends AppCompatActivity {
         if (extras != null){
             id_Destitny = extras.getString("Id");
             user_actual = extras.getString("user_actual");
+            country_place = extras.getString("country_place");
             photo_UrlUser = extras.getString("photo_UrlUser");
             name_actual_u = extras.getString("name_actual_u");
+            image_place = extras.getString("image_place");
         }else {
             Log.e("Erro","No Info");
         }
@@ -264,4 +264,40 @@ public class PostDestinyActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_post_destiny,menu);
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_preference:
+                addFavorito();
+                return true;
+            case R.id.action_report:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void addFavorito() {
+        String idfav = databaseReferenceFav.push().getKey();
+
+        String uid = firebaseAuth.getCurrentUser().getUid();
+
+
+        Favorito fav = new Favorito(idfav,uid,id_Destitny,country_place,image_place);
+
+        databaseReferenceFav.child(idfav).setValue(fav).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(),R.string.add_OK,Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),R.string.add_error,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 }

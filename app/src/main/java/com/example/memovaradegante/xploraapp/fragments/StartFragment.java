@@ -221,7 +221,7 @@ public class StartFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            Toast.makeText(context,"Start",Toast.LENGTH_SHORT).show();
+            Log.e("Start","Inicio");
         }
     }
 

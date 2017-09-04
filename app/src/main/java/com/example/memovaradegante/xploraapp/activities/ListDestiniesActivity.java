@@ -75,7 +75,9 @@ public class ListDestiniesActivity extends AppCompatActivity {
                 //Pass Information to the PostDestinyActivity
                 Intent intent = new Intent(getApplicationContext(), PostDestinyActivity.class);
                 intent.putExtra("Id",place.getId());
+                intent.putExtra("country_place",place.getCountry());
                 intent.putExtra("user_actual",user_actual);
+                intent.putExtra("image_place",place.getPoster());
                 intent.putExtra("photo_UrlUser",photo_UrlUser);
                 intent.putExtra("name_actual_u",name_actual_u);
                 startActivity(intent);

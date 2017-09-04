@@ -27,6 +27,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="fab_m">Mas visitados</string>
 
 
     <string name="countries">Paises</string>
@@ -51,6 +52,9 @@
 
     <string name="addfab">Agregar a favoritos</string>
     <string name="report">Reportar</string>
+
+    <string name="add_OK">Agregado Correctamente</string>
+    <string name="add_error">Error al agregar</string>
 
 
 </resources>
