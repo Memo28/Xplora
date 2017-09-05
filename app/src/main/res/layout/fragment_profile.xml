@@ -1,13 +1,115 @@
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.memovaradegante.xploraapp.fragments.ProfileFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Profile" />
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="150dp" >
+            <ImageButton
+                android:id="@+id/editProfileImageButton"
+                android:layout_centerInParent="true"
+                android:layout_width="60dp"
+                android:layout_height="60dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_margin="3dp"
+            android:background="@drawable/roundcorner"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/editTextNameProfile"
+                android:layout_marginTop="3dp"
+                android:padding="10dp"
+                android:text="Memo Vara De Gante"
+                android:textColor="#989898"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/editTextCountryProfile"
+                android:padding="10dp"
+                android:text="Mexico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+
+            <TextView
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:text="Acerca de Mi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/editTextDescriptionProfile"
+                android:padding="10dp"
+                android:text="Estudiante de ingenieria chalalala "
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:text="Intereses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/editTextInterestsProfile"
+                android:padding="10dp"
+                android:text="Estudiante de ingenieria chalalala "
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <View
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <TextView
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:text="Experiencias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_recycler_view_expirences_profile"
+                android:scrollbars="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fltActionBtnEditProfile"
+        android:layout_gravity="bottom|right"
+        android:layout_width="wrap_content"
+        android:src="@mipmap/ic_edit"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>
+

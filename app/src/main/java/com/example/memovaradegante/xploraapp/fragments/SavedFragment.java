@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.memovaradegante.xploraapp.R;
@@ -64,7 +65,6 @@ public class SavedFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
 
 
-
     public SavedFragment() {
         // Required empty public constructor
     }
@@ -102,21 +102,21 @@ public class SavedFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_saved,container,false);
         v.setTag(TAG);
+
+
         firebaseAuth = FirebaseAuth.getInstance();
         user_actual = firebaseAuth.getCurrentUser().getUid();
         placesFav = this.getAllFavs();
-
         //Inflando el Reycler View de Favoritos
         mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view_favoritos);
-        mlayoutManager = new LinearLayoutManager(getActivity());
-        Log.e("PlaceFav", Integer.toString(placesFav.size()));
+        mRecyclerView.setHasFixedSize(true);
+        mlayoutManager = new LinearLayoutManager(getContext());
         mAdapter = new MyAdapterListPlace(R.layout.recycler_view_item_list_destiny, placesFav, new MyAdapterListPlace.OnItemClickListener() {
             @Override
             public void onItemClick(Places_Model place, int position) {
 
             }
         });
-        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(mlayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -167,7 +167,7 @@ public class SavedFragment extends Fragment {
     }
 
     private List<Places_Model> getAllFavs() {
-         final ArrayList<Places_Model> places_list =new ArrayList<Places_Model>();
+        final ArrayList<Places_Model> places_list =new ArrayList<Places_Model>();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("favoritos");
         databaseReferencePlace = firebaseDatabase.getReference("places");

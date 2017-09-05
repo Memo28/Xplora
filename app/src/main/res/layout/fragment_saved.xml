@@ -10,14 +10,15 @@
         android:scrollbars="vertical"
         tools:context=".activities.MainActivity">
         <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextSearchFab"
             android:hint="Buscar"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
             android:padding="10dp"
-            android:focusable="true"
             android:background="@drawable/roundcorner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
+        <requestFocus/>
 
         <TextView
             android:text="@string/fab"
