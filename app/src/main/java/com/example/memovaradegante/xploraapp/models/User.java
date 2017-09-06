@@ -11,15 +11,39 @@ public class User {
     public String psw;
     public String country;
     public String urlImage;
+    public String infoUser;
+    public String interest;
 
 
-    public User(String id, String name, String email, String psw, String country,String urlImage) {
+    public User(String id, String name, String email, String psw, String country,String urlImage,String infoUser,String interest) {
         this.id = id;
         this.urlImage = urlImage;
         this.name = name;
         this.email = email;
         this.psw = psw;
         this.country = country;
+        this.infoUser = infoUser;
+        this.interest = interest;
+    }
+
+    public User(){
+
+    }
+
+    public String getInfoUser() {
+        return infoUser;
+    }
+
+    public void setInfoUser(String infoUser) {
+        this.infoUser = infoUser;
+    }
+
+    public String getInterest() {
+        return interest;
+    }
+
+    public void setInterest(String interest) {
+        this.interest = interest;
     }
 
     public String getId() {

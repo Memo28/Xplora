@@ -1,15 +1,40 @@
 package com.example.memovaradegante.xploraapp.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.memovaradegante.xploraapp.R;
+import com.example.memovaradegante.xploraapp.activities.EditProfileActivity;
+import com.example.memovaradegante.xploraapp.adapters.MyAdapterPlace;
+import com.example.memovaradegante.xploraapp.models.Places_Model;
+import com.example.memovaradegante.xploraapp.models.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,8 +53,27 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private List<Places_Model> experiences = new ArrayList<Places_Model>();
 
     private OnFragmentInteractionListener mListener;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReferenceExperiences;
+
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mlayoutManager;
+
+
+    private ImageButton imageButtonProfileImage;
+    private TextView textViewNameProfile;
+    private TextView textViewCountryProfile;
+    private TextView textViewDescriptionProfile;
+    private TextView textViewInteresProfile;
+    private FloatingActionButton fltActionBtnEditProfile;
+
+    private User user_info;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -66,8 +110,95 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View v = inflater.inflate(R.layout.fragment_profile,container,false);
+        databaseReferenceExperiences = FirebaseDatabase.getInstance().getReference("places");
+        textViewNameProfile = (TextView) v.findViewById(R.id.textViewNameProfile);
+        textViewCountryProfile = (TextView) v.findViewById(R.id.textViewCountryProfile);
+        textViewDescriptionProfile = (TextView) v.findViewById(R.id.textViewDescriptionProfile);
+        textViewInteresProfile = (TextView) v.findViewById(R.id.textViewInterestsProfile);
+        imageButtonProfileImage = (ImageButton) v.findViewById(R.id.imageButtonProfileEdit);
+        fltActionBtnEditProfile = (FloatingActionButton) v.findViewById(R.id.fltActionBtnEditProfile);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        final String user_id = firebaseAuth.getCurrentUser().getEmail();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    String user_aux = ds.child("email").getValue().toString();
+                    if (user_aux.equals(user_id)){
+                        user_info = ds.getValue(User.class);
+                        Picasso.with(getActivity()).load(user_info.getUrlImage())
+                                .transform(new CropCircleTransformation())
+                                .fit().into(imageButtonProfileImage);
+                        textViewNameProfile.setText(user_info.getName());
+                        textViewCountryProfile.setText(user_info.getCountry());
+                        textViewDescriptionProfile.setText(user_info.getInfoUser());
+                        textViewInteresProfile.setText(user_info.getInterest());
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view_expirences_profile);
+
+        databaseReferenceExperiences.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot ds: dataSnapshot.getChildren()){
+                        String id_user = ds.child("id_user").getValue().toString();
+                        Log.e("ID",id_user);
+                        Log.e("ID",user_info.getEmail());
+                        if (id_user.equals(user_info.getEmail())){
+                            Places_Model pl = ds.getValue(Places_Model.class);
+                            experiences.add(pl);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
+        mlayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new MyAdapterPlace(experiences, R.layout.recycler_view_item, new MyAdapterPlace.OnItemClickLister() {
+            @Override
+            public void onItemClick(Places_Model place, int position) {
+
+            }
+        });
+
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setLayoutManager(mlayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        return v;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -106,4 +237,20 @@ public class ProfileFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        fltActionBtnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),EditProfileActivity.class);
+                intent.putExtra("Interest",user_info.getInterest());
+                intent.putExtra("About_me",user_info.getInfoUser());
+                startActivity(intent);
+            }
+        });
+    }
+
 }

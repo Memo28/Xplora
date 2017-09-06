@@ -199,14 +199,14 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     @SuppressWarnings("VisibleForTests") Uri uriImage = taskSnapshot.getDownloadUrl();
-                    User user = new User(uid,name,email,country,psw,uriImage.toString());
+                    User user = new User(uid,name,email,country,psw,uriImage.toString(),"Cuentanos acerca de ti...","¿Que cosas te gusta hacer");
                     databaseUser.child(id).setValue(user);
                 }
             });
         }else{
             //Caso en el que usuario no selecciona una image
             //Le pasamos como URL de imagen una cadena vacia debido a que no selecciona nada
-            User user = new User(id,name,email,country,psw,"");
+            User user = new User(id,name,email,country,psw,"","Cuentanos acerca de ti...","¿Que cosas te gusta hacer");
             databaseUser.child(id).setValue(user);
         }
     }

@@ -158,7 +158,6 @@ public class StartFragment extends Fragment {
         mRecyclerViewFab.setItemAnimator(new DefaultItemAnimator());
         mRecyclerViewFab.setLayoutManager(mlayoutManagerFab);
         mRecyclerViewFab.setAdapter(mAdapterFab);
-
         return v;
     }
 
@@ -166,6 +165,13 @@ public class StartFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //Obtenemos informacion del Usuario
+        firebaseAuth = FirebaseAuth.getInstance();
+        user_actual = firebaseAuth.getCurrentUser().getEmail();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users");
+
 
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,20 +184,12 @@ public class StartFragment extends Fragment {
             }
         });
 
-
-        //Obtenemos informacion del Usuario
-        firebaseAuth = FirebaseAuth.getInstance();
-        user_actual = firebaseAuth.getCurrentUser().getUid();
-
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users");
-
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
-                        String user = ds.child("id").getValue().toString();
+                        String user = ds.child("email").getValue().toString();
                         if (user.equals(user_actual)){
                             photo_UrlUser = ds.child("urlImage").getValue().toString();
                             name_actual_u = ds.child("name").getValue().toString();
@@ -206,7 +204,10 @@ public class StartFragment extends Fragment {
             }
         });
 
+
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -249,9 +250,9 @@ public class StartFragment extends Fragment {
     //Obtenemos todos los lugares
     private List<Places_Model> getAllPlaces(){
         return new ArrayList<Places_Model>(){{
-            add(new Places_Model("0","Piramide","Mexico","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/ch.jpg?alt=media&token=2f2923b5-5e84-4ec3-8fae-aaf212542d2a",""));
-            add(new Places_Model("1","Volcan","Colombia","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9dZei6FmqKa4l7eFT%2F15965071_1250192065027150_5835714856368535408_n.jpg?alt=media&token=bdf10fa9-bd5c-4e1a-b4bb-bd3da12beeeb",""));
-            add(new Places_Model("2","Desierto","Chile","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/CHias.jpg?alt=media&token=49bbb595-d68d-4866-8d51-cdb1d62f46fd",""));
+            add(new Places_Model("0","Memo","Piramide","Mexico","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/ch.jpg?alt=media&token=2f2923b5-5e84-4ec3-8fae-aaf212542d2a",""));
+            add(new Places_Model("1","Memo","Volcan","Colombia","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9dZei6FmqKa4l7eFT%2F15965071_1250192065027150_5835714856368535408_n.jpg?alt=media&token=bdf10fa9-bd5c-4e1a-b4bb-bd3da12beeeb",""));
+            add(new Places_Model("2","Memo","Desierto","Chile","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/CHias.jpg?alt=media&token=49bbb595-d68d-4866-8d51-cdb1d62f46fd",""));
         }
         };
     }
@@ -261,9 +262,9 @@ public class StartFragment extends Fragment {
     //Obtenemos todos los lugares
     private List<Places_Model> getAllFabPlaces(){
         return new ArrayList<Places_Model>(){{
-            add(new Places_Model("3","Piramide","Mexico","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/ch.jpg?alt=media&token=2f2923b5-5e84-4ec3-8fae-aaf212542d2a",""));
-            add(new Places_Model("4","Volcan","Colombia","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9dZei6FmqKa4l7eFT%2F15965071_1250192065027150_5835714856368535408_n.jpg?alt=media&token=bdf10fa9-bd5c-4e1a-b4bb-bd3da12beeeb",""));
-            add(new Places_Model("5","Desierto","Chile","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/CHias.jpg?alt=media&token=49bbb595-d68d-4866-8d51-cdb1d62f46fd",""));
+            add(new Places_Model("3","Memo","Piramide","Mexico","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/ch.jpg?alt=media&token=2f2923b5-5e84-4ec3-8fae-aaf212542d2a",""));
+            add(new Places_Model("4","Memo","Volcan","Colombia","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/profileImage-Kr9dZei6FmqKa4l7eFT%2F15965071_1250192065027150_5835714856368535408_n.jpg?alt=media&token=bdf10fa9-bd5c-4e1a-b4bb-bd3da12beeeb",""));
+            add(new Places_Model("5","Memo","Desierto","Chile","Toma bus","Economico","https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/CHias.jpg?alt=media&token=49bbb595-d68d-4866-8d51-cdb1d62f46fd",""));
         }
         };
     }

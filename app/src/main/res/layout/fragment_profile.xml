@@ -19,10 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="150dp" >
             <ImageButton
-                android:id="@+id/editProfileImageButton"
+                android:background="@null"
+                android:id="@+id/imageButtonProfileEdit"
                 android:layout_centerInParent="true"
-                android:layout_width="60dp"
-                android:layout_height="60dp" />
+                android:layout_width="150dp"
+                android:layout_height="130dp" />
         </RelativeLayout>
 
         <LinearLayout
@@ -32,10 +33,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/editTextNameProfile"
+                android:id="@+id/textViewNameProfile"
                 android:layout_marginTop="3dp"
                 android:padding="10dp"
-                android:text="Memo Vara De Gante"
                 android:textColor="#989898"
                 android:textStyle="bold"
                 android:textSize="30dp"
@@ -43,9 +43,8 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/editTextCountryProfile"
+                android:id="@+id/textViewCountryProfile"
                 android:padding="10dp"
-                android:text="Mexico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -63,9 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/editTextDescriptionProfile"
+                android:id="@+id/textViewDescriptionProfile"
                 android:padding="10dp"
-                android:text="Estudiante de ingenieria chalalala "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -76,9 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/editTextInterestsProfile"
+                android:id="@+id/textViewInterestsProfile"
                 android:padding="10dp"
-                android:text="Estudiante de ingenieria chalalala "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

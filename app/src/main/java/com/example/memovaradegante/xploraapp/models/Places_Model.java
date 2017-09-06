@@ -7,6 +7,7 @@ package com.example.memovaradegante.xploraapp.models;
 public class Places_Model {
 
     public String id;
+    public String id_user;
     public String title;
     public String country;
     public String description;
@@ -18,14 +19,31 @@ public class Places_Model {
 
     }
 
-    public Places_Model(String id, String title, String country, String description, String type, String poster,String cost) {
+    public Places_Model(String id,String id_user, String title, String country, String description, String type, String poster,String cost) {
         this.cost = cost;
         this.id=id;
+        this.id_user = id_user;
         this.country = country;
         this.title = title;
         this.description = description;
         this.type = type;
         this.poster = poster;
+    }
+
+    public String getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(String id_user) {
+        this.id_user = id_user;
+    }
+
+    public String getCost() {
+        return cost;
+    }
+
+    public void setCost(String cost) {
+        this.cost = cost;
     }
 
     public String getId() {

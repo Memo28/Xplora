@@ -63,7 +63,6 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
     private int STORAGE_PERMISSION_CODE = 23;
 
     private Uri uriImageAddDestiny;
-    private FirebaseAuth firebaseAuth;
     private DatabaseReference databasePlace;
     private StorageReference storageReference;
     private ProgressDialog progressDialog;
@@ -73,7 +72,10 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
 
     private String[] costs = {"Bajo", "Medio", "Alto"};
     private int[] coins = {R.drawable.moneda_bronce, R.drawable.moneda_plata, R.drawable.moned_oro};
-
+    private String city_pass;
+    private String user_actual;
+    private String photo_UrlUser;
+    private String name_actual_u;
 
     private static final String TAG = "AddDestinyActivity";
     private static final int GOOGLE_API_CLIENT_ID = 0;
@@ -90,6 +92,12 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_add_destiny);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         progressDialog = new ProgressDialog(this);
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null){
+            user_actual = extras.getString("user_actual");
+        }
+
 
 
         editTextTitle = (EditText) findViewById(R.id.editTextTitleAddDestiny);
@@ -121,7 +129,6 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
         mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
 
         //FireBase
-        firebaseAuth = FirebaseAuth.getInstance();
         databasePlace = FirebaseDatabase.getInstance().getReference("places");
         storageReference = FirebaseStorage.getInstance().getReference();
     }
@@ -181,7 +188,7 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     @SuppressWarnings("VisibleForTests") Uri uriImage = taskSnapshot.getDownloadUrl();
 
-                    Places_Model destiny = new Places_Model(id,title,place,description,type,uriImage.toString(),cost);
+                    Places_Model destiny = new Places_Model(id,user_actual,title,place,description,type,uriImage.toString(),cost);
                     databasePlace.child(id).setValue(destiny);
                     Toast.makeText(getApplicationContext(),"Destino agregado correctamente",Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();

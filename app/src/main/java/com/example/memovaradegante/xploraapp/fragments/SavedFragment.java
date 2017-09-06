@@ -50,7 +50,7 @@ public class SavedFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private List<Places_Model> placesFav;
+    private List<Places_Model> placesFav = new ArrayList<Places_Model>();
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -106,11 +106,61 @@ public class SavedFragment extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
         user_actual = firebaseAuth.getCurrentUser().getUid();
-        placesFav = this.getAllFavs();
-        //Inflando el Reycler View de Favoritos
+
+
+
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("favoritos");
+        databaseReferencePlace = firebaseDatabase.getReference("places");
+
         mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view_favoritos);
-        mRecyclerView.setHasFixedSize(true);
+
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        String user_id = ds.child("id_user").getValue().toString();
+                        if(user_id.contains(user_actual)){
+                            final String id_place = ds.child("title").getValue().toString();
+                            databaseReferencePlace.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                                        String city = ds.child("id").getValue().toString();
+                                        Log.e("IDCity",city);
+                                        Log.e("IDPlace",id_place);
+                                        if (city.equals(id_place)){
+                                            Places_Model pl = ds.getValue(Places_Model.class);
+                                            placesFav.add(pl);
+                                        }
+                                    }
+                                    mAdapter.notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        //Inflando el Reycler View de Favoritos
         mlayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setHasFixedSize(true);
         mAdapter = new MyAdapterListPlace(R.layout.recycler_view_item_list_destiny, placesFav, new MyAdapterListPlace.OnItemClickListener() {
             @Override
             public void onItemClick(Places_Model place, int position) {
@@ -166,50 +216,5 @@ public class SavedFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private List<Places_Model> getAllFavs() {
-        final ArrayList<Places_Model> places_list =new ArrayList<Places_Model>();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("favoritos");
-        databaseReferencePlace = firebaseDatabase.getReference("places");
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot ds : dataSnapshot.getChildren()){
-                        String user_id = ds.child("id_user").getValue().toString();
-                        if(user_id.contains(user_actual)){
-                            final String id_place = ds.child("title").getValue().toString();
-                            databaseReferencePlace.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot ds : dataSnapshot.getChildren()){
-                                        String city = ds.child("id").getValue().toString();
-                                        Log.e("IDCity",city);
-                                        Log.e("IDPlace",id_place);
-                                        if (city.equals(id_place)){
-                                            Places_Model pl = ds.getValue(Places_Model.class);
-                                            places_list.add(pl);
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return places_list;
-    }
 
 }
