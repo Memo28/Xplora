@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,14 +18,17 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.memovaradegante.xploraapp.R;
+import com.example.memovaradegante.xploraapp.activities.PostDestinyActivity;
 import com.example.memovaradegante.xploraapp.adapters.MyAdapterListPlace;
 import com.example.memovaradegante.xploraapp.adapters.MyAdapterPlace;
 import com.example.memovaradegante.xploraapp.models.Places_Model;
+import com.example.memovaradegante.xploraapp.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -58,11 +62,14 @@ public class SavedFragment extends Fragment {
 
     private DatabaseReference databaseReference;
     private DatabaseReference databaseReferencePlace;
+    private DatabaseReference databaseReferenceUsers;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
 
     private String user_actual;
     private static final String TAG = "RecyclerViewFragment";
+
+    private User user_s;
 
 
     public SavedFragment() {
@@ -108,11 +115,28 @@ public class SavedFragment extends Fragment {
         user_actual = firebaseAuth.getCurrentUser().getUid();
 
 
-
-
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("favoritos");
         databaseReferencePlace = firebaseDatabase.getReference("places");
+        databaseReferenceUsers = firebaseDatabase.getReference("users");
+
+        Query query = databaseReferenceUsers.orderByChild("email").equalTo(firebaseAuth.getCurrentUser().getEmail());
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    user_s = ds.getValue(User.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view_favoritos);
 
@@ -164,7 +188,17 @@ public class SavedFragment extends Fragment {
         mAdapter = new MyAdapterListPlace(R.layout.recycler_view_item_list_destiny, placesFav, new MyAdapterListPlace.OnItemClickListener() {
             @Override
             public void onItemClick(Places_Model place, int position) {
+                Log.e("Push",place.getTitle());
 
+                //Pass Information to the PostDestinyActivity
+                Intent intent = new Intent(getContext(), PostDestinyActivity.class);
+                intent.putExtra("Id",place.getId());
+                intent.putExtra("country_place",place.getCountry());
+                intent.putExtra("user_actual",user_s.getEmail());
+                intent.putExtra("image_place",place.getPoster());
+                intent.putExtra("photo_UrlUser",user_s.getUrlImage());
+                intent.putExtra("name_actual_u",user_s.getName());
+                startActivity(intent);
             }
         });
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
