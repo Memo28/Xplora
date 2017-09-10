@@ -213,7 +213,7 @@ public class ProfileFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            Toast.makeText(context,"Profile",Toast.LENGTH_SHORT).show();
+            Log.e("Fragment","Profile");
         }
     }
 
@@ -248,6 +248,8 @@ public class ProfileFragment extends Fragment {
                 Intent intent = new Intent(getContext(),EditProfileActivity.class);
                 intent.putExtra("Interest",user_info.getInterest());
                 intent.putExtra("About_me",user_info.getInfoUser());
+                intent.putExtra("password",user_info.getPsw());
+                intent.putExtra("id",user_info.getId());
                 startActivity(intent);
             }
         });

@@ -69,7 +69,14 @@ public class HomeActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content, new StartFragment()).commit();
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null){
+            fragmentTransaction.replace(R.id.content, new ProfileFragment()).commit();
+            navigation.setSelectedItemId(R.id.tab_profile);
+        }else {
+            fragmentTransaction.replace(R.id.content, new StartFragment()).commit();
+        }
 
 
     }
