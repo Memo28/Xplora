@@ -149,8 +149,13 @@ public class StartFragment extends Fragment {
 
             @Override
             public void onItemClick(Places_Model place, int position) {
-                Toast.makeText(getContext(),"OK", Toast.LENGTH_SHORT).show();
-
+                //Pass Information to the Fragment
+                Intent intent = new Intent(getActivity(), ListDestiniesActivity.class);
+                intent.putExtra("Country",place.getCountry());
+                intent.putExtra("user_actual",user_actual);
+                intent.putExtra("photo_UrlUser",photo_UrlUser);
+                intent.putExtra("name_actual_u",name_actual_u);
+                startActivity(intent);
             }
         });
 

@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -75,15 +76,11 @@ public class PostDestinyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_destiny);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
-
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("comments");
         databaseReferenceDestinies = FirebaseDatabase.getInstance().getReference("places");
         databaseReferenceFav = FirebaseDatabase.getInstance().getReference("favoritos");
         progressDialog = new ProgressDialog(this);
-
-
 
 
         Bundle extras = getIntent().getExtras();
@@ -97,7 +94,6 @@ public class PostDestinyActivity extends AppCompatActivity {
         }else {
             Log.e("Erro","No Info");
         }
-
         editTextComment = (EditText) findViewById(R.id.editTextAddComment);
         btnAddComment = (ImageButton) findViewById(R.id.imageButtonAddComment);
         imageViewComment = (ImageView) findViewById(R.id.imageViewCommentsV);
@@ -260,8 +256,26 @@ public class PostDestinyActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_post_destiny,menu);
+
+        final Query query = databaseReferenceFav.orderByChild("title").equalTo(id_Destitny);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    menu.getItem(0).setTitle(R.string.removefab);
+                }else {
+                    menu.getItem(0).setTitle(R.string.addfab);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         return true;
     }
 
@@ -269,7 +283,9 @@ public class PostDestinyActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_preference:
-                addFavorito();
+                Log.e("Item",item.getItemId()+"");
+                addFavorito(item);
+                item.setTitle(R.string.removefab);
                 return true;
             case R.id.action_report:
                 return true;
@@ -278,25 +294,44 @@ public class PostDestinyActivity extends AppCompatActivity {
         }
     }
 
-    private void addFavorito() {
-        String idfav = databaseReferenceFav.push().getKey();
+    private void addFavorito(final MenuItem item) {
 
-        String uid = firebaseAuth.getCurrentUser().getUid();
+        if(item.getTitle().toString().equals("Agregar a favoritos")){
+            String idfav = databaseReferenceFav.push().getKey();
+            String uid = firebaseAuth.getCurrentUser().getUid();
+            Favorito fav = new Favorito(idfav,uid,id_Destitny,country_place,image_place);
+
+            databaseReferenceFav.child(idfav).setValue(fav).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(getApplicationContext(),R.string.add_OK,Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(),R.string.add_error,Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else {
+
+            final Query query = databaseReferenceFav.orderByChild("title").equalTo(id_Destitny);
 
 
-        Favorito fav = new Favorito(idfav,uid,id_Destitny,country_place,image_place);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        ds.getRef().removeValue();
+                        Toast.makeText(getApplicationContext(),R.string.remove_OK,Toast.LENGTH_SHORT).show();
+                        item.setTitle(R.string.addfab);
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-        databaseReferenceFav.child(idfav).setValue(fav).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(),R.string.add_OK,Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(),R.string.add_error,Toast.LENGTH_SHORT).show();
-            }
-        });
+                }
+            });
+        }
 
     }
 

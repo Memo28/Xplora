@@ -50,10 +50,16 @@
 
 
     <string name="addfab">Agregar a favoritos</string>
+    <string name="removefab">Quitar de favoritos</string>
     <string name="report">Reportar</string>
+
+
 
     <string name="add_OK">Agregado Correctamente</string>
     <string name="add_error">Error al agregar</string>
+    <string name="remove_OK">Quitado correctamente</string>
+    <string name="remove_error">Error al quitar</string>
+
 
 
 </resources>
