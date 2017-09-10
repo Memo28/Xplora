@@ -35,6 +35,7 @@
         android:layout_height="wrap_content">
 
         <EditText
+            android:inputType="text"
             android:id="@+id/editTextTitleAddDestiny"
             android:background="@drawable/input_outline"
             android:hint="Agrega un titulo..."
@@ -42,6 +43,7 @@
             android:layout_height="wrap_content" />
 
         <AutoCompleteTextView
+            android:inputType="textAutoComplete"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="2dp"
@@ -49,6 +51,7 @@
             android:id="@+id/autoCompleteTextViewAddDestiny"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:hint="¿Que lugar visitaste...?" >
             <requestFocus />
         </AutoCompleteTextView>
@@ -74,8 +77,6 @@
 
 
         </LinearLayout>
-
-
         <EditText
             android:id="@+id/editTextDescriptionAddDestiny"
             android:layout_width="match_parent"

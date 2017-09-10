@@ -103,7 +103,7 @@ public class PlaceArrayAdapter  extends ArrayAdapter<PlaceArrayAdapter.PlaceAuto
 
             PendingResult<AutocompletePredictionBuffer> results = Places.GeoDataApi
                     .getAutocompletePredictions(mGoogleApiClient, constraint.toString(),
-                            mBounds, mPlaceFilter);
+                            null, mPlaceFilter);
 
             // Wait for predictions, set the timeout.
             AutocompletePredictionBuffer autocompletePredictions = results

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 import com.example.memovaradegante.xploraapp.R;
 import com.example.memovaradegante.xploraapp.adapters.MyAdapterSpinner;
 import com.example.memovaradegante.xploraapp.adapters.PlaceArrayAdapter;
+import com.example.memovaradegante.xploraapp.models.Comment;
 import com.example.memovaradegante.xploraapp.models.Places_Model;
 import com.example.memovaradegante.xploraapp.models.User;
 import com.google.android.gms.common.ConnectionResult;
@@ -38,6 +40,7 @@ import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -62,10 +65,14 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
     private static final int GALLERY_INTENT = 1;
     private int STORAGE_PERMISSION_CODE = 23;
 
-    private Uri uriImageAddDestiny;
     private DatabaseReference databasePlace;
+    private DatabaseReference databaseReferenceComment;
     private StorageReference storageReference;
+    private FirebaseAuth firebaseAuth;
+
+
     private ProgressDialog progressDialog;
+    private Uri uriImageAddDestiny;
 
 
 
@@ -90,12 +97,15 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_destiny);
+        firebaseAuth = FirebaseAuth.getInstance();
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         progressDialog = new ProgressDialog(this);
         Bundle extras = getIntent().getExtras();
 
         if (extras != null){
             user_actual = extras.getString("user_actual");
+            photo_UrlUser = extras.getString("photo_UrlUser");
+            name_actual_u = extras.getString("name_actual_u");
         }
 
 
@@ -130,6 +140,7 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
 
         //FireBase
         databasePlace = FirebaseDatabase.getInstance().getReference("places");
+        databaseReferenceComment = FirebaseDatabase.getInstance().getReference("comments");
         storageReference = FirebaseStorage.getInstance().getReference();
     }
 
@@ -190,8 +201,38 @@ public class AddDestinyActivity extends AppCompatActivity implements View.OnClic
 
                     Places_Model destiny = new Places_Model(id,user_actual,title,place,description,type,uriImage.toString(),cost);
                     databasePlace.child(id).setValue(destiny);
+
+                    //Add the comment to the destiny
+                    final String id = databaseReferenceComment.push().getKey();
+                    String uid = firebaseAuth.getCurrentUser().getUid();
+                    Comment comment= new Comment(destiny.getId(),name_actual_u,uid,id,photo_UrlUser,"0","0",description);
+                    databaseReferenceComment.child(id).setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                         Log.e("Error",e.toString());
+                        }
+                    });
+
+
                     Toast.makeText(getApplicationContext(),"Destino agregado correctamente",Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
+
+                    //Pass Information to the PostDestinyActivity
+                    Intent intent = new Intent(getApplicationContext(), PostDestinyActivity.class);
+                    intent.putExtra("Id",destiny.getId());
+                    intent.putExtra("country_place",destiny.getCountry());
+                    intent.putExtra("user_actual",user_actual);
+                    intent.putExtra("image_place",destiny.getPoster());
+                    intent.putExtra("photo_UrlUser",photo_UrlUser);
+                    intent.putExtra("name_actual_u",name_actual_u);
+                    finish();
+                    startActivity(intent);
+
                 }
             });
         }else {
