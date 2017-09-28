@@ -3,12 +3,30 @@
 
     <item
         is-multidex="true"
-        jar="D:\Documentos\XploraApp\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jar="C:\Users\Memo Vara De Gante\.android\build-cache\85dc96d26e8946f316e9a0800d75f54765002d96\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.0"
-        sha1="58bbe4d89c580d057fdb0c953258f1206dda0a04">
-        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_daf29f975a143aa529790212757e94ea129110d8\classes.dex" />
+        sha1="3c433e48557e476290f45fb6cb568d1a103c9978">
+        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_00c9047168402c4265267c050de97d347bc23473\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Memo Vara De Gante\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.4.0\d85884acf6810a3bbbecb587f239005cbc846dc4\bolts-tasks-1.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\bolts-tasks-1.4.0_987fa2703cf4ff85d610c4657ff4aeb96b883172\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Memo Vara De Gante\.android\build-cache\3abdbb2bd9cfbe154961a97de975e92ac3195872\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="38c0f2d5be3c27ed0adf9aebe7b8e3aa0d78b9fb">
+        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_23e158967688dfa91a25d99bedfdfe2c9008b4d1\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -18,6 +36,78 @@
         revision="26.0.0"
         sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
         <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_c421e75dc68cbf5da046ad1862bf4ee90cf9e31b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Memo Vara De Gante\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-applinks\1.4.0\8ad21bf21784dacce5f2043afb97218cc377e835\bolts-applinks-1.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="8ad21bf21784dacce5f2043afb97218cc377e835">
+        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\bolts-applinks-1.4.0_23940de205dc357f0b2a913d9feeb29ff62905cb\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Memo Vara De Gante\.android\build-cache\fc4f18cb8959d7e76a2143fbc93f20b4c1dbf51a\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="7058bce7e91ddb18e2e07b0b699019039b87e47b">
+        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_5d527a60dedd4b6f91ec0bf88e61abd0cdc082f3\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Memo Vara De Gante\.android\build-cache\9fc0a249bc906a4af33a74822cdaa0e26d893c24\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="42a3ae86dd3ae2876d3e95c2e6e104ae57a50a65">
+        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_58dc7a55d2aa169a78e101bab4993c2ee85ee257\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Documentos\XploraApp\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="a1c73a3bd3f975316cf576403aef0f1c3e36a11e">
+        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_daf29f975a143aa529790212757e94ea129110d8\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Memo Vara De Gante\.android\build-cache\3a0a96a85143b33b065f83f304e59cf3a4abefe7\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="672cceae26e9a8fcbd8e0eefe5fc351c50d2488a">
+        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_06719c06f24d8bdbd93c728047b02a094eec958c\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Memo Vara De Gante\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\3.7.0\9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4\glide-3.7.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4">
+        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\glide-3.7.0_02b8ebe8524991123f68002ef512a5dc113cda61\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Memo Vara De Gante\.android\build-cache\095057569ad10b15e8a4485fd9931564f478e2a1\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="2d1eaa9e0b98f8fc4c2b989d9b30d4f1480648ac">
+        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_dd58aafe34af9cd661f43a3dd92dafca2c082a7b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Memo Vara De Gante\.android\build-cache\d2e606c97c2f651404ea3f955a30c5f452829def\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="16226703bab55ec42457666213cd3503799d36a8">
+        <dex dex="D:\Documentos\XploraApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_3c43ac8d9c6f932a79c02bb30bdd828a5fa6f7bc\classes.dex" />
     </item>
 
 </items>

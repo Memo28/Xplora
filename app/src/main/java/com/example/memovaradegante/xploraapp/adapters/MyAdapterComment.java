@@ -26,7 +26,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
  * Created by Memo Vara De Gante on 23/08/2017.
  */
 
-public class MyAdapterComment extends RecyclerView.Adapter<MyAdapterComment.ViewHolder> {
+public class MyAdapterComment extends RecyclerView.Adapter<MyAdapterComment.ViewHolder>  {
 
     private Context context;
     private int layout;
@@ -59,7 +59,7 @@ public class MyAdapterComment extends RecyclerView.Adapter<MyAdapterComment.View
         return comments.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView textViewUser;
         public TextView textVieDescription;
@@ -80,6 +80,9 @@ public class MyAdapterComment extends RecyclerView.Adapter<MyAdapterComment.View
             imageButtonDislike = (ImageButton) itemView.findViewById(R.id.imageButtonDislike);
 
         }
+
+
+
         public void bind(final Comment comment, final OnItemClickListener listener){
             textViewUser.setText(comment.getUser());
             textVieDescription.setText(comment.getDescription());
@@ -101,7 +104,6 @@ public class MyAdapterComment extends RecyclerView.Adapter<MyAdapterComment.View
                     int like = Integer.parseInt(textViewLike.getText().toString());
                     like = like+1;
                     database.child(comment.getComment_Id()).child("likes").setValue(Integer.toString(like));
-                    textViewLike.setText(like+"");
                 }
             });
 
@@ -109,9 +111,8 @@ public class MyAdapterComment extends RecyclerView.Adapter<MyAdapterComment.View
                 @Override
                 public void onClick(View view) {
                     int dislike = Integer.parseInt(textViewDisLike.getText().toString());
-                    dislike = dislike + 1;
+                    dislike = dislike - 1;
                     database.child(comment.getComment_Id()).child("dislikes").setValue(Integer.toString(dislike));
-                    textViewDisLike.setText(dislike+"");
                 }
             });
         }

@@ -206,7 +206,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }else{
             //Caso en el que usuario no selecciona una image
             //Le pasamos como URL de imagen una cadena vacia debido a que no selecciona nada
-            User user = new User(id,name,email,country,psw,"","Cuentanos acerca de ti...","¿Que cosas te gusta hacer");
+            User user = new User(id,name,email,country,psw,"https://firebasestorage.googleapis.com/v0/b/xplora-15a7b.appspot.com/o/defaultImages%2FprofileDefaultImage.png?alt=media&token=1caa795f-db62-4a5e-8ced-c853745ee8f1","Cuentanos acerca de ti...","¿Que cosas te gusta hacer");
             databaseUser.child(id).setValue(user);
         }
     }

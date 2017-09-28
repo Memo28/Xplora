@@ -38,14 +38,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
-
                 android:textStyle="normal"
                 android:id="@+id/editTextEmail"
                 android:layout_width="231dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:layout_gravity="center"
-                android:hint="@string/ing_usr"
+                android:hint="@string/address"
                 android:layout_marginBottom="20dp"
                 android:inputType="textEmailAddress" />
 

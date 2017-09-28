@@ -16,6 +16,7 @@
         />
 
     <TextView
+        android:maxLines="2"
         android:id="@+id/text_view_User_Comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,6 +27,7 @@
         />
 
     <TextView
+        android:maxLines="2"
         android:id="@+id/text_view_Information_Comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

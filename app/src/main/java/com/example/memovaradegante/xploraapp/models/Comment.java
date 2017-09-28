@@ -94,4 +94,8 @@ public class Comment {
         this.description = description;
     }
 
+    public void addLike(int num){
+        this.likes +=num;
+    }
+
 }

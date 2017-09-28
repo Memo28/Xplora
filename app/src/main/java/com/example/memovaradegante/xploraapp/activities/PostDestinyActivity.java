@@ -43,7 +43,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 public class PostDestinyActivity extends AppCompatActivity {
 
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<Comment>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter madapter;
     private RecyclerView.LayoutManager mlayoutManager;
@@ -59,6 +59,8 @@ public class PostDestinyActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private DatabaseReference databaseReferenceDestinies;
     private DatabaseReference databaseReferenceFav;
+    private DatabaseReference database;
+
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
@@ -68,6 +70,11 @@ public class PostDestinyActivity extends AppCompatActivity {
     private EditText editTextComment;
     private ImageButton btnAddComment;
     private ImageView imageViewComment;
+    public ImageButton imageButtonLike;
+    public ImageButton imageButtonDislike;
+    public TextView textViewLike;
+    public TextView textViewDisLike;
+
 
 
 
@@ -78,6 +85,7 @@ public class PostDestinyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_destiny);
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("comments");
+        database = FirebaseDatabase.getInstance().getReference("comments");
         databaseReferenceDestinies = FirebaseDatabase.getInstance().getReference("places");
         databaseReferenceFav = FirebaseDatabase.getInstance().getReference("favoritos");
         progressDialog = new ProgressDialog(this);
@@ -135,31 +143,46 @@ public class PostDestinyActivity extends AppCompatActivity {
             }
         });
 
-        comments = this.getAllComments();
+        //Get comments
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        String place_id = ds.child("id").getValue().toString();
+                        if(place_id.equals(id_Destitny)){
+                            Comment comment = ds.getValue(Comment.class);
+                            comments.add(comment);
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewComments);
         mlayoutManager = new LinearLayoutManager(this);
         madapter = new MyAdapterComment(R.layout.recycler_view_item_recommendation,comments,
                 new MyAdapterComment.OnItemClickListener() {
                     @Override
-                    public void onItemClick(Comment comment, int position) {
+                    public void onItemClick(final Comment comment, int position) {
+
                         AlertDialog.Builder mBuilder = new AlertDialog.Builder(PostDestinyActivity.this);
                         View mView = getLayoutInflater().inflate(R.layout.dialog_comment,null);
                         TextView textViewUserDialog = (TextView) mView.findViewById(R.id.textViewUserDialog);
                         TextView textViewDescription = (TextView) mView.findViewById(R.id.textViewCommentDialog);
                         ImageView imageViewDialog = (ImageView) mView.findViewById(R.id.imageViewDialog);
                         ImageButton btnContacDialog = (ImageButton) mView.findViewById(R.id.imageButtonContact);
-
                         //Agregamos informacion a los TextView
                         Picasso.with(getApplicationContext()).load(comment.getUserImage())
                                 .transform(new CropCircleTransformation()).fit().into(imageViewDialog);
-
                         textViewUserDialog.setText(comment.getUser());
                         textViewDescription.setText(comment.getDescription());
-
-
-
-
-
                         btnContacDialog.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -193,14 +216,11 @@ public class PostDestinyActivity extends AppCompatActivity {
                     }
                 });
 
-        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setLayoutManager(mlayoutManager);
         mRecyclerView.setAdapter(madapter);
 
         getImagesDestiny();
-
-
 
     }
 
@@ -225,33 +245,6 @@ public class PostDestinyActivity extends AppCompatActivity {
 
             }
         });
-
-    }
-
-    private List<Comment> getAllComments() {
-
-        final ArrayList<Comment> comments_list = new ArrayList<Comment>();
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    for (DataSnapshot ds : dataSnapshot.getChildren()){
-                        String place_id = ds.child("id").getValue().toString();
-                        if(place_id.equals(id_Destitny)){
-                            Comment comment = ds.getValue(Comment.class);
-                            comments_list.add(comment);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return comments_list;
 
     }
 

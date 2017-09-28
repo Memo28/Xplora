@@ -25,7 +25,7 @@ import java.util.List;
 
 public class ListDestiniesActivity extends AppCompatActivity {
 
-    private List<Places_Model> places;
+    private List<Places_Model> places = new ArrayList<Places_Model>();
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter madapter;
     private RecyclerView.LayoutManager mlayoutManager;
@@ -63,7 +63,30 @@ public class ListDestiniesActivity extends AppCompatActivity {
 
 
 
-        places = this.getAllPlaces();
+        //Obtenemos todos los lugares
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        String city = ds.child("country").getValue().toString();
+                        if (city.contains(city_pass)){
+                            Places_Model pl = ds.getValue(Places_Model.class);
+                            places.add(pl);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_list_destinies);
         mlayoutManager = new LinearLayoutManager(this);
         madapter = new MyAdapterListPlace(R.layout.recycler_view_item_list_destiny,places,
@@ -89,46 +112,5 @@ public class ListDestiniesActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mlayoutManager);
         mRecyclerView.setAdapter(madapter);
 
-    }
-
-
-    //Obtenemos todos los lugares
-    private List<Places_Model> getAllPlaces(){
-
-        final ArrayList<Places_Model> places_list = new ArrayList<Places_Model>();
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    for (DataSnapshot ds : dataSnapshot.getChildren()){
-                        String city = ds.child("country").getValue().toString();
-                        if (city.contains(city_pass)){
-                            Places_Model pl = ds.getValue(Places_Model.class);
-                            places_list.add(pl);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return places_list;
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("city",city_pass);
-        Log.e("onSaved",outState.getString("city"));
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        city_pass = savedInstanceState.getString("city");
     }
 }

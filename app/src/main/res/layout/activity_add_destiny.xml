@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/back_2"
     tools:context="com.example.memovaradegante.xploraapp.activities.AddDestinyActivity">
 
-
+    <ScrollView
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/imageViewAddDestiny"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_weight="0.91"
         android:layout_margin="10dp"
         android:background="@drawable/roundcorner"
         app:srcCompat="@mipmap/ic_camera_destiny"
@@ -22,6 +30,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
     <LinearLayout
+        android:layout_below="@+id/imageViewAddDestiny"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:paddingTop="15dp"
@@ -30,7 +39,6 @@
         android:paddingRight="5dp"
         android:orientation="vertical"
         android:background="@drawable/roundcorner"
-        android:layout_below="@+id/imageViewAddDestiny"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -53,7 +61,6 @@
             android:layout_height="wrap_content"
 
             android:hint="¿Que lugar visitaste...?" >
-            <requestFocus />
         </AutoCompleteTextView>
         <LinearLayout
             android:layout_marginBottom="10dp"
@@ -74,8 +81,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
-
-
         </LinearLayout>
         <EditText
             android:id="@+id/editTextDescriptionAddDestiny"
@@ -85,9 +90,9 @@
             android:background="@drawable/input_outline"
             android:hint="Cuentanos tu experiencia..."
             android:inputType="textMultiLine" />
-
-
     </LinearLayout>
-
+    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
+

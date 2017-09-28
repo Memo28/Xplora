@@ -194,7 +194,7 @@ public class StartFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
-                        String user = ds.child("email").getValue().toString();
+                                String user = ds.child("email").getValue().toString();
                         if (user.equals(user_actual)){
                             photo_UrlUser = ds.child("urlImage").getValue().toString();
                             name_actual_u = ds.child("name").getValue().toString();
