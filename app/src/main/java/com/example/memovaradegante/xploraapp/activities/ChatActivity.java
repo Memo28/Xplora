@@ -1,75 +1,110 @@
 package com.example.memovaradegante.xploraapp.activities;
 
-import android.text.format.DateFormat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.memovaradegante.xploraapp.R;
+import com.example.memovaradegante.xploraapp.adapters.ChatHolder;
 import com.example.memovaradegante.xploraapp.models.Message;
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
-public class ChatActivity extends AppCompatActivity implements View.OnClickListener{
+public class ChatActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText editTextMessage;
-    private ImageButton imageButtonSendMessage;
-    private ListView mrecyclerView;
-    private FirebaseListAdapter<Message> madapter;
-    private RecyclerView.LayoutManager mlayoutManager;
+    protected DatabaseReference mChatRef;
+    private FirebaseAuth mAuth;
+
+
+
+    private ImageButton mSendBtn;
+    private EditText mMessageEdit;
+
+    private RecyclerView mMessages;
+    private LinearLayoutManager mManager;
+    private FirebaseRecyclerAdapter<Message,ChatHolder> mAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
-        editTextMessage = (EditText) findViewById(R.id.editTextMessageChat);
-        imageButtonSendMessage = (ImageButton) findViewById(R.id.imageButtonSendMessage);
-        mrecyclerView = (ListView) findViewById(R.id.recyclerViewMensagges);
+        mAuth = FirebaseAuth.getInstance();
 
-        imageButtonSendMessage.setOnClickListener(this);
-        displayMessages();
+        mSendBtn = (ImageButton) findViewById(R.id.imageButtonSendMessage);
+        mMessageEdit = (EditText) findViewById(R.id.editTextMessageChat);
+
+        mChatRef = FirebaseDatabase.getInstance().getReference().child("messages");
+
+        mSendBtn.setOnClickListener(this);
+        mManager = new LinearLayoutManager(this);
+        mManager.setReverseLayout(false);
+
+        mMessages = (RecyclerView) findViewById(R.id.messagesList);
+        mMessages.setHasFixedSize(true);
+        mManager.setStackFromEnd(true);
+        mMessages.setLayoutManager(mManager);
+
+
+        attachRecyclerViewAdapter();
+
 
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.imageButtonSendMessage:
-                sendMessage();
-                return;
-            default:
-                return;
-        }
+        String uid = mAuth.getCurrentUser().getEmail();
 
-    }
-
-    private void sendMessage() {
-        String message = editTextMessage.getText().toString();
-        FirebaseDatabase.getInstance().getReference("messages").push().setValue(
-                new Message(FirebaseAuth.getInstance().getCurrentUser().getEmail(),"clausdama@hotmail.com",message));
-        editTextMessage.setText("");
-    }
-
-    private void displayMessages(){
-        madapter = new FirebaseListAdapter<Message>(this,Message.class,R.layout.listview_chat_item,FirebaseDatabase.getInstance().getReference()) {
+        Message msgn= new Message(uid,"memovdg@gmail.com",mMessageEdit.getText().toString());
+        mChatRef.push().setValue(msgn, new DatabaseReference.CompletionListener() {
             @Override
-            protected void populateView(View v, Message model, int position) {
-                TextView textViewMessage = (TextView) v.findViewById(R.id.editTextMessage);
-                TextView textViewDate = (TextView) v.findViewById(R.id.editTextTimeMessage);
-                textViewMessage.setText(model.getUser_recibe());
-                textViewDate.setText(DateFormat.format("dd-MM-yy (HH:mm:ss)",model.getDate()));
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if(databaseError != null){
+                    Log.e("Error", "Failed to write message", databaseError.toException());
 
+                }
+            }
+        });
+
+        mMessageEdit.setText("");
+    }
+
+    private void attachRecyclerViewAdapter() {
+        mAdapter = getAdapter();
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                mManager.smoothScrollToPosition(mMessages,null,mAdapter.getItemCount());
+            }
+        });
+
+        mMessages.setAdapter(mAdapter);
+    }
+
+
+    protected FirebaseRecyclerAdapter<Message, ChatHolder> getAdapter() {
+        Query lastFifty = mChatRef.limitToLast(50);
+        return new FirebaseRecyclerAdapter<Message, ChatHolder>(
+                Message.class,
+                R.layout.listview_chat_item,
+                ChatHolder.class,
+                lastFifty) {
+            @Override
+            protected void populateViewHolder(ChatHolder viewHolder, Message model, int position) {
+                viewHolder.bind(model);
             }
         };
-        mrecyclerView.setAdapter(madapter);
-
     }
 }
+
